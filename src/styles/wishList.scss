@@ -1,0 +1,44 @@
+.card-body::-webkit-scrollbar {
+    display: none;
+  }
+
+  .card-body {
+    padding: 0;
+  }
+
+  .col-2 {
+    margin: 15px 0;
+  }
+
+  .card-buttons {
+    display: flex;
+    justify-content: space-around;
+    border-top: 1px solid gray;
+  }
+
+  .wishlist {
+    margin: 20px 0px;
+    align-self: flex-end;
+    background-image: url('../images/card-back.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+
+  
+  .fullscreen {
+    width: 100%;
+  }
+  .main-wishlist {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+
+    #card-info {
+      max-width: 45vw;
+      img {
+        width: 20vw;
+      }
+    }
+  }

@@ -1,0 +1,22 @@
+.isDragging {
+  border: 2px dashed rgba(0, 0, 0, 0.2);
+  padding-top: 31px;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  cursor: grabbing;
+}
+
+.card-button {
+  cursor: grabbing;
+  background-color: white;
+  padding: 0;
+  border: 0;
+  margin: 2px;
+  max-width: 168px;
+  max-height: 246px;
+}
+
+.mini-card {
+  padding: 2px;
+}

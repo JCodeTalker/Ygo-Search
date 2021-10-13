@@ -1,0 +1,47 @@
+#main-deck {
+  display: flex;
+  background-color: gray;
+  // height: 70vh;
+  height: 60vh;
+  width: auto;
+  overflow: auto;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  padding: 6px;
+  margin: 20px 10px;
+
+  .mini-card {
+    height: 16vh;
+    margin: 3px;
+    padding: 0;
+    // flex-shrink: ;
+    // height: ;
+  }
+}
+
+
+#main-deck::-webkit-scrollbar {
+  display: none;
+}
+
+
+#extra-deck {
+  display: flex;
+  background-color: gray;
+  // height: 70vh;
+  height: 23vh;
+  width: auto;
+  overflow: auto;
+  flex-wrap: wrap;
+  // justify-content: space-between;
+  padding: 6px;
+  margin: 20px 10px;
+
+  .mini-card {
+    height: 16vh;
+    margin: 3px;
+    padding: 0;
+    // flex-shrink: ;
+    // height: ;
+  }
+}

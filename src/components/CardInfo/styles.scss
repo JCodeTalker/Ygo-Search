@@ -1,0 +1,40 @@
+#card-info {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  align-self: flex-start;
+  margin: 10px;
+  background-color: grey;
+  color: white;
+  width: 100%;
+  p {
+    margin: 0;
+  }
+  h6 {
+    margin-bottom: 5px;
+  }
+
+  Button {
+    margin: 10px;
+    align-self: center;
+  }
+
+  #card-image {
+    align-self: center;
+    justify-self: center;
+  }
+
+  #card-text {
+    margin: 20px;
+  }
+  
+  #next-art {
+    background-color: rgba(76, 175, 80, 0.0);
+  }
+
+#arr {
+  cursor: pointer;
+  height: 40px;
+  align-self: center;
+}
+}

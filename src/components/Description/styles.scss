@@ -1,0 +1,25 @@
+.desc {
+  display: flex;
+  flex-direction: column;
+  align-items: inherit;
+  justify-content: center;
+}
+
+#sign-in-button {
+  display: flex;
+  background-color: dodgerblue;
+  color: white;
+  gap: 3px;
+}
+
+#main-options {
+  display: flex;
+}
+
+.options {
+  margin: 150px 20px 5px 5px;
+  Button {
+    margin-top: 5px;
+    display: block;
+  }
+}
