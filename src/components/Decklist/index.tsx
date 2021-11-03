@@ -19,11 +19,6 @@ type dropItemType = {
 
 export function Decklist() {
 
-  const lista: cardListType =
-    [{
-      name: '',
-      count: 0
-    }]
 
   const [mainDeck, setMainDeck] = useState<cardListType>()
   const [mainDeckDrop, setMainDrop] = useState<dropItemType>()
@@ -35,7 +30,9 @@ export function Decklist() {
   const [{ canDrop, isOver, didDrop }, drop,] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType, monitor) => {
-      setMainDrop(item)
+      if (!item.cardData.type.includes("Synchro") && !item.cardData.type.includes("XYZ") && !item.cardData.type.includes("Link") && !item.cardData.type.includes("Fusion")) {
+        setMainDrop(item)
+      }
     },
     collect: monitor => ({
       canDrop: monitor.canDrop(),
@@ -48,7 +45,9 @@ export function Decklist() {
   const [, drop2] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType, monitor) => {
-      setExtraDrop(item)
+      if (item.cardData.type.includes("Synchro") || item.cardData.type.includes("XYZ") || item.cardData.type.includes("Link") || item.cardData.type.includes("Fusion")) {
+        setExtraDrop(item)
+      }
     },
     collect: monitor => ({
       canDrop: monitor.canDrop(),
@@ -57,69 +56,75 @@ export function Decklist() {
     })
   }))
 
-  function preventFourthCardCopy(cardDropped: dropItemType | undefined, deckPart: cardListType | undefined, setListState: React.Dispatch<React.SetStateAction<cardListType | undefined>>) {
-    if (cardDropped !== undefined) {
+  function addDropToDeck(cardDropped: dropItemType, deckPart: cardListType | undefined,
+    setListState: React.Dispatch<React.SetStateAction<cardListType | undefined>>) {
 
-      let index = -1
+    if (!deckPart) {
+      setListState([{ name: cardDropped.name, count: 1, content: cardDropped.cardData }])
+      return
+    }
 
-      if (deckPart) {
-        index = deckPart.findIndex(x => x.name === cardDropped.name)
-      }
+    let cardDroppedLastIndex = deckPart.findIndex(card => card.name === cardDropped.name) // get the index of the current dropped item(if it exists)
 
+    if (cardDroppedLastIndex === -1) {  // card not in list
+      let list = deckPart
+      list.push({ name: cardDropped.name, count: 1, content: cardDropped.cardData })
+      setListState(list)
+    }
 
-      if (index !== -1 && deckPart && deckPart[index].count < 3) {
-        let newList = deckPart.filter((item, pos) => pos !== index)
-
-        setListState([
-          ...newList,
-          {
-            name: cardDropped.name,
-            content: cardDropped.cardData,
-            count: deckPart[index].count + 1
-          }
-        ])
-      } else {
-        if (index === -1 && deckPart) {
-          console.log(deckPart)
-          let list = deckPart
-          list.push({ name: cardDropped.name, count: 1, content: cardDropped.cardData })
-          // deckPart?.length > 0 ? setListState(prev => [...prev, { name: cardDropped.name, count: 1, content: cardDropped.cardData }]) : setListState([{ name: cardDropped.name, count: 1, content: cardDropped.cardData }])
-          setListState(list)
-        } else {
-          setListState([{ name: cardDropped.name, count: 1, content: cardDropped.cardData }])
+    if (cardDroppedLastIndex !== -1 && deckPart[cardDroppedLastIndex].count < 3) {  // if card already in list
+      let newList = deckPart.filter((item, pos) => pos !== cardDroppedLastIndex)
+      setListState([
+        ...newList,
+        {
+          name: cardDropped.name,
+          content: cardDropped.cardData,
+          count: deckPart[cardDroppedLastIndex].count + 1
         }
-      }
+      ])
+    } else {  // if full(i.e, already has 3 copies of the card)
+      return
     }
   }
 
   useEffect(() => {
-    preventFourthCardCopy(mainDeckDrop, mainDeck, setMainDeck)
+    if (mainDeck && provideLength(mainDeck) === 61) {
+      return
+    }
+    mainDeckDrop && addDropToDeck(mainDeckDrop, mainDeck, setMainDeck)
   }, [mainDeckDrop])
 
   useEffect(() => {
-    // if (extraDeck) {
-    preventFourthCardCopy(extraDeckDrop, extraDeck, setExtraDeck)
-    // }
+    if (extraDeck && provideLength(extraDeck) === 16) {
+      return
+    }
+    extraDeckDrop && addDropToDeck(extraDeckDrop, extraDeck, setExtraDeck)
   }, [extraDeckDrop])
 
-  function toCardList(card: cardObj) {
-    let cards = []
+
+  function toMiniCard(card: cardObj) {
+    let miniCards = []
     for (let i = 0; i < card.count; i++) {
-      cards.push(card.content && <MiniCard card={card.content} key={i} />)
+      miniCards.push(card.content && <MiniCard card={card.content} key={i} />)
     }
 
-    return cards
+    return miniCards
   }
 
+  function provideLength(deckPart: cardListType) {
+    return deckPart.reduce((total: number, card) => {
+      return total + card.count
+    }, 1)
+  }
 
   return (
     <>
       <div id="main-deck" ref={drop}>
-        {mainDeck?.map((card) => toCardList(card))}
+        {mainDeck?.map((card) => toMiniCard(card))}
       </div>
 
       <div id="extra-deck" ref={drop2}>
-        {extraDeck?.map(card => toCardList(card))}
+        {extraDeck?.map(card => toMiniCard(card))}
       </div>
     </>
   )

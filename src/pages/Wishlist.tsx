@@ -1,10 +1,11 @@
-import { MainMenu } from '../components/MainMenu'
 import '../styles/wishList.scss'
 import { useAuth } from '../hooks/useAuth'
 import { useState } from 'react'
 import { CardInfo } from '../components/CardInfo'
 import { cardType } from '../components/CardInfo'
 import Footer from '../components/Footer'
+import { MainHeader } from '../components/MainHeader'
+import { useCardSearch } from '../hooks/useCardSearch'
 
 type wishListProps = {
   fullscreen?: boolean
@@ -13,7 +14,12 @@ type wishListProps = {
 export function Wishlist() {
   const { user } = useAuth()
   const [cardInfo, setCardInfo] = useState<cardType>() // card that get emphasized on screen(on click)
+  const cardSearch = useCardSearch
 
+  async function resolveSearch(cardName: string) {
+    let searchResult = await cardSearch({ exact: true, name: cardName })
+    setCardInfo(searchResult[0])
+  }
 
 
   function WishListComponent(props: wishListProps) {
@@ -45,7 +51,7 @@ export function Wishlist() {
 
   return (
     <div className="home">
-      <MainMenu />
+      <MainHeader resolveFunction={resolveSearch} ></MainHeader>
       <div className="main-wishlist">
         <WishListComponent fullscreen={cardInfo ? false : true} />
       </div>

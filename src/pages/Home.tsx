@@ -4,9 +4,8 @@ import { Spinner } from "../components/Spinner"
 import { Description } from "../components/Description"
 import { CardInfo } from "../components/CardInfo"
 import { cardType } from '../components/CardInfo'
-import { MainMenu } from "../components/MainMenu"
 import { useCardSearch } from '../hooks/useCardSearch'
-import { CardSearchForm } from "../components/CardSearchForm"
+import { MainHeader } from "../components/MainHeader"
 import Footer from "../components/Footer"
 
 export function Home() {
@@ -45,13 +44,8 @@ export function Home() {
 
     return (
         <div className="home">
-            {/* <div className="main-menu container-fluid"> */}
-            {/* <MainMenu /> */}
-            <CardSearchForm resolveFunction={handleCardSearch} />
-            {/* </div> */}
-
+            <MainHeader resolveFunction={handleCardSearch} />
             {renderComponent()}
-
             <Footer />
         </div>
     )

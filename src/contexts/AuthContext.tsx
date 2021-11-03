@@ -34,13 +34,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     auth.signOut()
     setUser({})
     history.push('/')
-    // setLoginStatus(false)
   }
-
-
-  useEffect(() => {
-    console.log(user)
-  }, [user])
 
 
   useEffect(() => {
@@ -95,6 +89,20 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
       if (!displayName || !photoURL) {
         throw new Error("Missing information from Google")
+      }
+
+
+      const users = await firestoreDb.collection(`usuarios`).doc(`${displayName}`).get()
+      if (!users.exists) {
+        console.log("No data found, creating new user.")
+        const newUser = await firestoreDb.collection("usuarios").doc(`${displayName}`).set({
+          name: displayName,
+          id: uid,
+          avatar: photoURL,
+          email: email
+        })
+      } else {
+        console.log("User data found: " + users.data())
       }
 
       getUserWishList(displayName).then(list => {

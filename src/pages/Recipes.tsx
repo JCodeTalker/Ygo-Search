@@ -1,12 +1,11 @@
 import 'react-lazy-load-image-component/src/effects/blur.css';
-import { MainMenu } from "../components/MainMenu";
 import "../styles/recipes.scss";
 import { ScrollableCardList } from "../components/ScrollableCardList";
 import { Decklist } from "../components/Decklist/index";
 import { useEffect, useState } from 'react';
 import { useCardSearch } from '../hooks/useCardSearch'
 import { cardType } from '../components/CardInfo';
-import { CardSearchForm } from '../components/CardSearchForm';
+import { MainHeader } from '../components/MainHeader';
 
 export function Recipes() {
   const getCards = useCardSearch
@@ -16,6 +15,7 @@ export function Recipes() {
     cardName = cardName ? cardName : 'complete-list'
     let searchResult: cardType[] = await getCards({ exact: true, name: cardName })
     if (searchResult) {
+      console.log(searchResult)
       setCardList(searchResult)
     }
   }
@@ -27,19 +27,16 @@ export function Recipes() {
   return (
     <>
       <div id="main" className="container-fluid">
-        <MainMenu />
+        <MainHeader resolveFunction={handleCardListRequest} />
         <div>
           <div className="row">
             <div className="col-5" style={{ padding: 0, margin: "0px" }}>
-              <CardSearchForm resolveFunction={handleCardListRequest} ></CardSearchForm>
 
               {cardList.length > 0 && <ScrollableCardList cards={cardList} key={cardList[0].name} />}
 
             </div>
             <div className="col-7">
-              {/* <div className="row"> */}
               <Decklist />
-              {/* </div> */}
             </div>
           </div>
         </div>

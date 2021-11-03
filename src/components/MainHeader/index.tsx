@@ -7,7 +7,7 @@ type formProps = {
   resolveFunction: (name: string) => void
 }
 
-export function CardSearchForm(props: formProps) {
+export function MainHeader(props: formProps) {
 
   const [cardName, setCardName] = useState('')
   const history = useHistory()
@@ -20,12 +20,6 @@ export function CardSearchForm(props: formProps) {
       history.push(path)
     }
   }
-
-  // <div>
-  {/* <form onSubmit={(event) => { event.preventDefault(); props.resolveFunction(cardName) }}>
-  <input type="text" placeholder="Type the card name here..." autoFocus onChange={event => setCardName(event.target.value)} />
-  <Button type='submit'>Search</Button>
-</form> */}
 
 
   return (
@@ -42,7 +36,7 @@ export function CardSearchForm(props: formProps) {
             <li><a href="#" className="nav-link px-2 link-dark" onClick={() => { handleNavigation('/wishlist') }}>WishList</a></li>
 
             <li>
-              <a type="button" className="dropdown-toggle nav-link px-2 link-dark" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >Anime Series</a>
+              <a href="#" type="button" className="dropdown-toggle nav-link px-2 link-dark" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >Anime Series</a>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a href="https://www.crunchyroll.com/pt-br/yu-gi-oh" target="_blank" rel="noreferrer" className="dropdown-item nav-link px-2 link-dark">Duel Monsters</a></li>
                 <li><a href="https://www.crunchyroll.com/pt-br/yu-gi-oh-gx" target="_blank" rel="noreferrer" className="dropdown-item nav-link px-2 link-dark">GX</a></li>
@@ -61,7 +55,7 @@ export function CardSearchForm(props: formProps) {
 
           <div className="dropdown text-end">
             <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src={user?.avatar} alt="mdo" width="32" height="32" className="rounded-circle" />
+              <img src={user?.avatar} alt="avatar" width="32" height="32" className="rounded-circle" />
             </a>
             <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
               <li><a className="dropdown-item" href="#">New project...</a></li>
@@ -74,6 +68,5 @@ export function CardSearchForm(props: formProps) {
         </div>
       </div>
     </header>
-    // </div>
   )
 }
