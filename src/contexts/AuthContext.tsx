@@ -33,7 +33,11 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   function signOut() {
     auth.signOut()
     setUser({})
-    history.push('/')
+    if (window.location.pathname === '/') {
+      history.go(0)
+    } else {
+      history.push('/')
+    }
   }
 
 

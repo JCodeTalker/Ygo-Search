@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react"
 import { useDrop } from "react-dnd"
+import { useAuth } from "../../hooks/useAuth"
+import { firestoreDb } from "../../services/firebase"
+import { Button } from "../Button"
 import { cardType } from "../CardInfo"
 import { MiniCard } from "../MiniCard"
 import './styles.scss'
@@ -25,6 +28,7 @@ export function Decklist() {
 
   const [extraDeck, setExtraDeck] = useState<cardListType>()
   const [extraDeckDrop, setExtraDrop] = useState<dropItemType>()
+  const { user } = useAuth()
 
 
   const [{ canDrop, isOver, didDrop }, drop,] = useDrop(() => ({
@@ -87,6 +91,17 @@ export function Decklist() {
     }
   }
 
+
+  async function saveRecipe() {
+    let batch = firestoreDb.batch()
+
+    mainDeck?.forEach(card => {
+      batch.set(firestoreDb.collection('usuarios').doc(`${user?.name}/New Deck/${card.name}`), card)
+    })
+    batch.commit()
+    alert('Recipe saved.')
+  }
+
   useEffect(() => {
     if (mainDeck && provideLength(mainDeck) === 61) {
       return
@@ -122,7 +137,10 @@ export function Decklist() {
       <div id="main-deck" ref={drop}>
         {mainDeck?.map((card) => toMiniCard(card))}
       </div>
-
+      <button type="button" onClick={saveRecipe} className="btn btn-primary m-3 position-fixed bottom-0 end-0">
+        Save recipe
+      </button>
+      {/* <div className="position-absolute top-3" style={{ backgroundColor: 'orange', height: '70vh', width: '80vw' }}>  </div> */}
       <div id="extra-deck" ref={drop2}>
         {extraDeck?.map(card => toMiniCard(card))}
       </div>

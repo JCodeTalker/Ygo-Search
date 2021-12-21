@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useHistory } from "react-router";
 import { useAuth } from '../../hooks/useAuth'
 // import { k } from '../../../public/kuriboh.ico'
+import avatar from '../../assets/avatar.png'
 
 type formProps = {
   resolveFunction: (name: string) => void
@@ -11,7 +12,7 @@ export function MainHeader(props: formProps) {
 
   const [cardName, setCardName] = useState('')
   const history = useHistory()
-  const { user, logOut } = useAuth()
+  const { user, logOut, signInWithGoogle } = useAuth()
 
   function handleNavigation(path: string) {
     if (window.location.pathname === path) {
@@ -55,14 +56,19 @@ export function MainHeader(props: formProps) {
 
           <div className="dropdown text-end">
             <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src={user?.avatar} alt="avatar" width="32" height="32" className="rounded-circle" />
+              <img src={user?.avatar ? user.avatar : avatar} alt="avatar" width="32" height="32" className="rounded-circle" />
             </a>
             <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-              <li><a className="dropdown-item" href="#">New project...</a></li>
+              <li><a className="dropdown-item" href="#">My deck recipes</a></li>
               <li><a className="dropdown-item" href="#">Settings</a></li>
               <li><a className="dropdown-item" href="#">Profile</a></li>
               <li><hr className="dropdown-divider" /></li>
-              <li><a className="dropdown-item" href="#" onClick={logOut}>Sign out</a></li>
+              {user?.name
+                ?
+                <li><a className="dropdown-item" href="#" onClick={logOut}>Sign out</a></li>
+                :
+                <li><a className="dropdown-item" href="#" onClick={signInWithGoogle}>Sign In</a></li>
+              }
             </ul>
           </div>
         </div>
