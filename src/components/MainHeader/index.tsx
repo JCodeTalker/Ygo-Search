@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useHistory } from "react-router";
 import { useAuth } from '../../hooks/useAuth'
-// import { k } from '../../../public/kuriboh.ico'
 import avatar from '../../assets/avatar.png'
 
 type formProps = {
@@ -28,13 +27,11 @@ export function MainHeader(props: formProps) {
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
           <a href="/" className="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-            {/* <svg className="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap"><use xlinkHref="#bootstrap" /></svg> */}
-            {/* <img src={k} alt="" /> */}
           </a>
 
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li><a href="#" className="nav-link px-2 link-secondary" onClick={() => { handleNavigation('/') }}>Home</a></li>
-            <li><a href="#" className="nav-link px-2 link-dark" onClick={() => { handleNavigation('/wishlist') }}>WishList</a></li>
+            {user?.wishlist && user.wishlist.length > 0 && <li><a href="#" className="nav-link px-2 link-dark" onClick={() => { handleNavigation('/wishlist') }}>WishList</a></li>}
 
             <li>
               <a href="#" type="button" className="dropdown-toggle nav-link px-2 link-dark" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >Anime Series</a>
@@ -56,12 +53,12 @@ export function MainHeader(props: formProps) {
 
           <div className="dropdown text-end">
             <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
-              <img src={user?.avatar ? user.avatar : avatar} alt="avatar" width="32" height="32" className="rounded-circle" />
+              <img src={user?.avatar ? user.avatar : avatar} alt="avatar" width="32" height="32" className="rounded-circle" style={{ opacity: 0.5 }} />
             </a>
             <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-              <li><a className="dropdown-item" href="#">My deck recipes</a></li>
+              {user && <li><a className="dropdown-item" href="#" onClick={() => history.push('/Decks')} >My deck recipes</a></li>}
+              <li><a className="dropdown-item" href="#" onClick={() => history.push('/Recipes')}>Create a deck</a></li>
               <li><a className="dropdown-item" href="#">Settings</a></li>
-              <li><a className="dropdown-item" href="#">Profile</a></li>
               <li><hr className="dropdown-divider" /></li>
               {user?.name
                 ?

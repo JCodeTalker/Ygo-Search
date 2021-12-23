@@ -6,7 +6,6 @@ import { CardInfo } from "../components/CardInfo"
 import { cardType } from '../components/CardInfo'
 import { useCardSearch } from '../hooks/useCardSearch'
 import { MainHeader } from "../components/MainHeader"
-import Footer from "../components/Footer"
 
 export function Home() {
 
@@ -16,10 +15,10 @@ export function Home() {
 
     async function handleCardSearch(cardName: string) {
         setComponent('spinner')
-        let card = await cardSearch({ name: cardName, exact: true })
+        let [card] = await cardSearch({ name: cardName, exact: true })
 
         if (card) {
-            setCard(card[0])
+            setCard(card)
             setComponent('card')
         }
         else {
@@ -46,7 +45,6 @@ export function Home() {
         <div className="home">
             <MainHeader resolveFunction={handleCardSearch} />
             {renderComponent()}
-            <Footer />
         </div>
     )
 }

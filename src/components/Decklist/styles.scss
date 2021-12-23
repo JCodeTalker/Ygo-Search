@@ -1,21 +1,17 @@
 #main-deck {
   display: flex;
   background-color: gray;
-  // height: 70vh;
   height: 60vh;
-  width: auto;
+  width: 55vw;
   overflow: auto;
   flex-wrap: wrap;
-  // justify-content: space-between;
   padding: 6px;
-  margin: 20px 10px;
+  justify-content: center;
 
   .mini-card {
     height: 16vh;
     margin: 3px;
     padding: 0;
-    // flex-shrink: ;
-    // height: ;
   }
 }
 
@@ -28,20 +24,17 @@
 #extra-deck {
   display: flex;
   background-color: gray;
-  // height: 70vh;
-  height: 23vh;
-  width: auto;
+  height: 22vh;
+  width: 55vw;
   overflow: auto;
   flex-wrap: wrap;
-  // justify-content: space-between;
   padding: 6px;
-  margin: 20px 10px;
+  margin: 20px 0;
+  justify-content: center;
 
   .mini-card {
     height: 16vh;
     margin: 3px;
     padding: 0;
-    // flex-shrink: ;
-    // height: ;
   }
 }

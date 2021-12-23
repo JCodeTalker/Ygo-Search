@@ -2,7 +2,7 @@ import 'react-lazy-load-image-component/src/effects/blur.css';
 import "../styles/recipes.scss";
 import { ScrollableCardList } from "../components/ScrollableCardList";
 import { Decklist } from "../components/Decklist/index";
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useCardSearch } from '../hooks/useCardSearch'
 import { cardType } from '../components/CardInfo';
 import { MainHeader } from '../components/MainHeader';
@@ -20,7 +20,7 @@ export function Recipes() {
     }
   }
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     handleCardListRequest()
   }, [])
 
@@ -35,8 +35,8 @@ export function Recipes() {
               {cardList.length > 0 && <ScrollableCardList cards={cardList} key={cardList[0].name} />}
 
             </div>
-            <div className="col-7">
-              <Decklist />
+            <div className="col-7 mt-2">
+              <Decklist saveButton />
             </div>
           </div>
         </div>

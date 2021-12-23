@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { createContext, Dispatch, ReactNode, useEffect, useState } from 'react';
+import { createContext, Dispatch, ReactNode, useEffect, useLayoutEffect, useState } from 'react';
 import { auth, firestoreDb } from '../services/firebase';
 import { cardType } from '../components/CardInfo'
 import { useHistory } from 'react-router-dom';
@@ -41,7 +41,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }
 
 
-  useEffect(() => {
+  useLayoutEffect(() => {
 
     const unsubscribe = auth.onAuthStateChanged(user => {
       if (user) { //user is signed in

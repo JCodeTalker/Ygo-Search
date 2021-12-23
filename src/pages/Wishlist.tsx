@@ -3,7 +3,6 @@ import { useAuth } from '../hooks/useAuth'
 import { useState } from 'react'
 import { CardInfo } from '../components/CardInfo'
 import { cardType } from '../components/CardInfo'
-import Footer from '../components/Footer'
 import { MainHeader } from '../components/MainHeader'
 import { useCardSearch } from '../hooks/useCardSearch'
 
@@ -17,15 +16,15 @@ export function Wishlist() {
   const cardSearch = useCardSearch
 
   async function resolveSearch(cardName: string) {
-    let searchResult = await cardSearch({ exact: true, name: cardName })
-    setCardInfo(searchResult[0])
+    let [searchResult] = await cardSearch({ exact: true, name: cardName })
+    setCardInfo(searchResult)
   }
 
 
   function WishListComponent(props: wishListProps) {
     return (
-      <div className={`main-wishlist`}>
-        {cardInfo && <CardInfo card={cardInfo}></CardInfo>}
+      <div className="main-wishlist">
+        {cardInfo && <CardInfo card={cardInfo} />}
         <div className={`container wishlist ${props.fullscreen ? 'fullscreen' : ''}`}>
           <div className={`row ${props.fullscreen ? 'fullscreen' : ''}`} id="row" >
             {user?.wishlist ?
@@ -51,11 +50,10 @@ export function Wishlist() {
 
   return (
     <div className="home">
-      <MainHeader resolveFunction={resolveSearch} ></MainHeader>
+      <MainHeader resolveFunction={resolveSearch} />
       <div className="main-wishlist">
         <WishListComponent fullscreen={cardInfo ? false : true} />
       </div>
-      <Footer />
     </div>
   )
 }
