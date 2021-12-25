@@ -29,8 +29,8 @@ jobs:
     - run: npm install -g yarn
     - name: yarn install, build and test
       run: |
-       yarn add
-       yarn build
+        yarn add
+        yarn build
     - name: Archive build
       uses: actions/upload-artifact@v2
       with:
