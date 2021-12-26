@@ -9,7 +9,8 @@ type User = {
   name?: string,
   avatar?: string,
   email?: string | null
-  wishlist?: cardType[]
+  wishlist?: cardType[],
+  deckNames?: string[]
 }
 
 type AuthContextType = {
@@ -51,13 +52,14 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
           throw new Error("Missing information from Google");
         }
 
-        getUserWishList(displayName).then(list => {
+        getUserAdditionalData(displayName).then(list => {
           setUser({
             id: uid,
             name: displayName,
             avatar: photoURL,
             email: email,
-            wishlist: list
+            wishlist: list.wishlist,
+            deckNames: list.userData?.deckNames
           })
         })
 
@@ -70,7 +72,14 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
   }, [])
 
 
-  async function getUserWishList(userName: string) {
+  async function getUserAdditionalData(userName: string) {
+    let userData
+    const userRef = await firestoreDb.collection("usuarios").doc(userName).get()
+    if (userRef.exists) {
+      userData = userRef.data() as User
+      console.log(userData)
+    }
+
     let wishlist: cardType[] = []
     const dbRef = await firestoreDb.collection(`usuarios/${userName}/Card WishList`).get()
 
@@ -78,7 +87,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       wishlist.push(doc.data() as cardType)
     })
 
-    return wishlist
+    return { userData, wishlist }
   }
 
 
@@ -99,7 +108,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       const users = await firestoreDb.collection(`usuarios`).doc(`${displayName}`).get()
       if (!users.exists) {
         console.log("No data found, creating new user.")
-        const newUser = await firestoreDb.collection("usuarios").doc(`${displayName}`).set({
+        await firestoreDb.collection("usuarios").doc(`${displayName}`).set({
           name: displayName,
           id: uid,
           avatar: photoURL,
@@ -107,15 +116,17 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         })
       } else {
         console.log("User data found: " + users.data())
+        // var decks = users.data()
       }
 
-      getUserWishList(displayName).then(list => {
+      getUserAdditionalData(displayName).then(list => {
         setUser({
           id: uid,
           name: displayName,
           avatar: photoURL,
           email: email,
-          wishlist: list
+          wishlist: list.wishlist,
+          deckNames: list.userData?.deckNames
         })
       })
     }

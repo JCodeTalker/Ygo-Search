@@ -4,6 +4,7 @@ import { useAuth } from "../../hooks/useAuth"
 import { firestoreDb } from "../../services/firebase"
 import { cardType } from "../CardInfo"
 import { MiniCard } from "../MiniCard"
+import firebase from 'firebase/app'
 import './styles.scss'
 
 export type cardObj = {
@@ -100,7 +101,6 @@ export function Decklist(props: DeckProps) {
     event.preventDefault()
     if (user) {
       let batch = firestoreDb.batch()
-
       mainDeck?.forEach(card => {
         batch.set(firestoreDb.collection('usuarios').doc(`${user.name}/${deckName}/${card.name}`), card)
       })
@@ -108,6 +108,11 @@ export function Decklist(props: DeckProps) {
         batch.set(firestoreDb.collection('usuarios').doc(`${user.name}/${deckName}/Extra Deck/Extra Deck/${card.name}`), card)
       })
       batch.commit()
+
+      await firestoreDb.collection("usuarios").doc(user.name).update({ // saving the deck's name on the user's doc
+        Deck_Names: firebase.firestore.FieldValue.arrayUnion(deckName)
+      })
+
       alert('Recipe saved.')
     } else {
       alert("You must login in before saving a deck.")
@@ -179,7 +184,7 @@ export function Decklist(props: DeckProps) {
       <div id="main-deck" ref={drop} className="rounded">
         {mainDeck?.map((card) => toMiniCard(card))}
       </div>
-      {mainDeck && provideDeckPartLength(mainDeck) >= 41 ?
+      {mainDeck && provideDeckPartLength(mainDeck) >= 2 ?
         <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`} data-bs-toggle="modal" data-bs-target="#exampleModal" >
           Save recipe
         </button>

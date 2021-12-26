@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { cardListType, cardObj, Decklist } from "../components/Decklist";
 import { MainHeader } from "../components/MainHeader";
 import { useAuth } from "../hooks/useAuth";
@@ -14,16 +14,21 @@ export function SavedDecks() {
     user?.name && getDeck()
   }, [user])
 
+  useEffect(() => {
+    user && console.log(user?.deckNames)
+  }, [user])
+
   async function getDeck() {
+    // let deckNames = await firestoreDb.collection("usuarios")
+
+
     let list: cardListType = []
     let xlist: cardListType = []
 
     let deck = await firestoreDb.collection(`usuarios/${user?.name}/some other deck`).where("count", "==", 3).get()
     deck.forEach(card => {
       list.push(card.data() as cardObj)
-      console.log(card.data())
     })
-    console.log(list)
     setMainDeck(list)
 
     let xDeck = await firestoreDb.collection(`usuarios/${user?.name}/deck with extra 2/Extra Deck/Extra Deck`).get()
@@ -49,9 +54,12 @@ export function SavedDecks() {
           <div className="col-8">
             <div className="tab-content" id="nav-tabContent">
               <div className="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
+                {/* <div className="container" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}> */}
                 {user && <Decklist saveButton={false} mainDeckCards={mainDeck} extraDeckCards={extraDeck} />}
+                {/* </div> */}
+
               </div>
-              <div className="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
+              <div className="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list"> {user?.deckNames} </div>
               <div className="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
               <div className="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
             </div>
