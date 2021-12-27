@@ -1,6 +1,5 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle';
-// import 'bootstrap'
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/AuthContext'
 import { Home } from './pages/Home';
@@ -15,7 +14,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter>
         <DndProvider backend={HTML5Backend}>
           <AuthContextProvider>
             <Switch>

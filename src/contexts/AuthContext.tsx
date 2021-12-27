@@ -1,5 +1,5 @@
 import firebase from 'firebase';
-import { createContext, Dispatch, ReactNode, useEffect, useLayoutEffect, useState } from 'react';
+import { createContext, Dispatch, ReactNode, useLayoutEffect, useState } from 'react';
 import { auth, firestoreDb } from '../services/firebase';
 import { cardType } from '../components/CardInfo'
 import { useHistory } from 'react-router-dom';
