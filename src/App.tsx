@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <>
-      <HashRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter basename={process.env.PUBLIC_URL}>
         <DndProvider backend={HTML5Backend}>
           <AuthContextProvider>
             <Switch>
@@ -25,7 +25,7 @@ function App() {
             </Switch>
           </AuthContextProvider>
         </DndProvider>
-      </HashRouter>
+      </BrowserRouter>
       <Footer />
     </>
   );
