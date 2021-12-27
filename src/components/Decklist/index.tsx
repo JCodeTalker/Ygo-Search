@@ -184,7 +184,7 @@ export function Decklist(props: DeckProps) {
       <div id="main-deck" ref={drop} className="rounded">
         {mainDeck?.map((card) => toMiniCard(card))}
       </div>
-      {mainDeck && provideDeckPartLength(mainDeck) >= 2 ?
+      {mainDeck && provideDeckPartLength(mainDeck) >= 41 ?
         <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`} data-bs-toggle="modal" data-bs-target="#exampleModal" >
           Save recipe
         </button>
