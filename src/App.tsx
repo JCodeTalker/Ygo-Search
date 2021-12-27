@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/AuthContext'
 import { Home } from './pages/Home';
 import { Recipes } from './pages/Recipes';
@@ -14,7 +14,7 @@ import Footer from './components/Footer';
 function App() {
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <DndProvider backend={HTML5Backend}>
           <AuthContextProvider>
             <Switch>
@@ -25,7 +25,7 @@ function App() {
             </Switch>
           </AuthContextProvider>
         </DndProvider>
-      </BrowserRouter>
+      </HashRouter>
       <Footer />
     </>
   );
