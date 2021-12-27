@@ -9,6 +9,7 @@ import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
 import { SavedDecks } from './pages/SavedDecks';
 import Footer from './components/Footer';
+import './styles/global.scss'
 
 // caminhos para as páginas vão aqui.
 function App() {
@@ -20,7 +21,7 @@ function App() {
             <Switch>
               <Route path="/" exact={true} component={Home} />
               <Route path="/Wishlist" exact={true} component={Wishlist} />
-              <Route path="/Recipes" exact={true} component={Recipes}></Route>
+              <Route path="/Recipes" component={Recipes}></Route>
               <Route path="/Decks" exact={true} component={SavedDecks}></Route>
             </Switch>
           </AuthContextProvider>

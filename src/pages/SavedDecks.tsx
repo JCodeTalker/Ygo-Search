@@ -19,8 +19,6 @@ export function SavedDecks() {
   }, [user])
 
   async function getDeck() {
-    // let deckNames = await firestoreDb.collection("usuarios")
-
 
     let list: cardListType = []
     let xlist: cardListType = []
@@ -54,10 +52,7 @@ export function SavedDecks() {
           <div className="col-8">
             <div className="tab-content" id="nav-tabContent">
               <div className="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">
-                {/* <div className="container" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignContent: 'center' }}> */}
                 {user && <Decklist saveButton={false} mainDeckCards={mainDeck} extraDeckCards={extraDeck} />}
-                {/* </div> */}
-
               </div>
               <div className="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list"> {user?.deckNames} </div>
               <div className="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>

@@ -30,11 +30,11 @@ export function MainHeader(props: formProps) {
           </a>
 
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-            <li><a href="#" className="nav-link px-2 link-secondary" onClick={() => { handleNavigation('/') }}>Home</a></li>
-            {user?.wishlist && user.wishlist.length > 0 && <li><a href="#" className="nav-link px-2 link-dark" onClick={() => { handleNavigation('/wishlist') }}>WishList</a></li>}
+            <li><a className="nav-link px-2 link-secondary" onClick={() => { handleNavigation('/') }}>Home</a></li>
+            {user?.wishlist && user.wishlist.length > 0 && <li><a className="nav-link px-2 link-dark" onClick={() => { handleNavigation('/wishlist') }}>WishList</a></li>}
 
             <li>
-              <a href="#" type="button" className="dropdown-toggle nav-link px-2 link-dark" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >Anime Series</a>
+              <a type="button" className="dropdown-toggle nav-link px-2 link-dark" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >Anime Series</a>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                 <li><a href="https://www.crunchyroll.com/pt-br/yu-gi-oh" target="_blank" rel="noreferrer" className="dropdown-item nav-link px-2 link-dark">Duel Monsters</a></li>
                 <li><a href="https://www.crunchyroll.com/pt-br/yu-gi-oh-gx" target="_blank" rel="noreferrer" className="dropdown-item nav-link px-2 link-dark">GX</a></li>
@@ -52,19 +52,19 @@ export function MainHeader(props: formProps) {
           </form>
 
           <div className="dropdown text-end">
-            <a href="#" className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
+            <a className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
               <img src={user?.avatar ? user.avatar : avatar} alt="avatar" width="32" height="32" className="rounded-circle" style={{ opacity: 0.5 }} />
             </a>
             <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-              {user && <li><a className="dropdown-item" href="#" onClick={() => history.push('/Decks')} >My deck recipes</a></li>}
-              <li><a className="dropdown-item" href="#" onClick={() => history.push('/Recipes')}>Create a deck</a></li>
-              <li><a className="dropdown-item" href="#">Settings</a></li>
+              {/* {user && <li><a className="dropdown-item" onClick={() => history.push('/Decks')} >My deck recipes</a></li>} */}
+              <li><a className="dropdown-item" onClick={() => history.push('/Recipes')}>Create a deck</a></li>
+              {/* <li><a className="dropdown-item">Settings</a></li> */}
               <li><hr className="dropdown-divider" /></li>
               {user?.name
                 ?
-                <li><a className="dropdown-item" href="#" onClick={logOut}>Sign out</a></li>
+                <li><a className="dropdown-item" onClick={logOut}>Sign out</a></li>
                 :
-                <li><a className="dropdown-item" href="#" onClick={signInWithGoogle}>Sign In</a></li>
+                <li><a className="dropdown-item" onClick={signInWithGoogle}>Sign In</a></li>
               }
             </ul>
           </div>
