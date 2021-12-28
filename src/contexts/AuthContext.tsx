@@ -10,7 +10,7 @@ type User = {
   avatar?: string,
   email?: string | null
   wishlist?: cardType[],
-  deckNames?: string[]
+  decks?: string[]
 }
 
 type AuthContextType = {
@@ -33,7 +33,7 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
   function signOut() {
     auth.signOut()
-    setUser({})
+    setUser({ decks: [""] })
     if (window.location.pathname === '/') {
       history.go(0)
     } else {
@@ -53,13 +53,13 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
         }
 
         getUserAdditionalData(displayName).then(list => {
-          setUser({
+          list.userData && setUser({
             id: uid,
             name: displayName,
             avatar: photoURL,
             email: email,
             wishlist: list.wishlist,
-            deckNames: list.userData?.deckNames
+            decks: list.userData.decks
           })
         })
 
@@ -120,13 +120,13 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
       }
 
       getUserAdditionalData(displayName).then(list => {
-        setUser({
+        list.userData && setUser({
           id: uid,
           name: displayName,
           avatar: photoURL,
           email: email,
           wishlist: list.wishlist,
-          deckNames: list.userData?.deckNames
+          decks: list.userData.decks
         })
       })
     }

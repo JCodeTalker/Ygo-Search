@@ -110,7 +110,7 @@ export function Decklist(props: DeckProps) {
       batch.commit()
 
       await firestoreDb.collection("usuarios").doc(user.name).update({ // saving the deck's name on the user's doc
-        Deck_Names: firebase.firestore.FieldValue.arrayUnion(deckName)
+        decks: firebase.firestore.FieldValue.arrayUnion(deckName)
       })
 
       alert('Recipe saved.')
@@ -184,7 +184,7 @@ export function Decklist(props: DeckProps) {
       <div id="main-deck" ref={drop} className="rounded">
         {mainDeck?.map((card) => toMiniCard(card))}
       </div>
-      {mainDeck && provideDeckPartLength(mainDeck) >= 41 ?
+      {mainDeck && provideDeckPartLength(mainDeck) >= 2 ? //should be 41
         <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`} data-bs-toggle="modal" data-bs-target="#exampleModal" >
           Save recipe
         </button>
