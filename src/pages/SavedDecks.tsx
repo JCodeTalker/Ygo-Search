@@ -43,7 +43,7 @@ export function SavedDecks() {
       <div className="container mt-5">
         <div className="row">
           <div className="col-4">
-            <div className="list-group" id="list-tab" role="tablist">
+            <div className="list-group" id="list-tab" role="tablist" style={{ marginTop: "32px" }} >
               {user?.decks?.map((deckName, index) =>
                 (<a key={index} onClick={() => setDeckPosition(index)} className={`list-group-item list-group-item-action ${index === 0 && "active"}`} id={`list-${deckName}-list`.replace(/\s+/g, '-')} data-bs-toggle="list" href={`#list-${deckName}`.replace(/\s+/g, '-')} role="tab" aria-controls={`list-${deckName}`.replace(/\s+/g, '-')} >{deckName}</a>))}
             </div>

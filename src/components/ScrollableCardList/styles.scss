@@ -1,8 +1,8 @@
 #card-list {
   display: flex;
   flex-wrap: wrap;
-  overflow: scroll;
-  height: 85vh;
+  overflow-y: scroll;
+  height: 89.5vh;
   width: auto;
   margin: 10px;
 }

@@ -3,7 +3,7 @@ import { Button } from '../Button'
 import { firestoreDb } from '../../services/firebase'
 import { useAuth } from '../../hooks/useAuth'
 import arrow from '../../images/right-arrow.svg'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 
 export type cardType = {
   name: string,
@@ -30,11 +30,11 @@ type infoProps = {
 export function CardInfo(props: infoProps) {
   const contextValues = useAuth()
   const desc = props.card.desc.split('\n').map((str, index) => <p key={index}>{str}</p>)
-  const [art, setArt] = useState(0)
+  const [cardArt, setArt] = useState(0)
 
   function changeCardArt() {
-    if (art < props.card.card_images.length - 1) {
-      setArt(art + 1)
+    if (cardArt < props.card.card_images.length - 1) {
+      setArt(cardArt + 1)
     } else {
       setArt(0)
     }
@@ -75,9 +75,6 @@ export function CardInfo(props: infoProps) {
 
   async function checkIfInWishlist() {
     const card = await firestoreDb.collection(`usuarios/${contextValues.user?.name}/Card WishList`).where('name', '==', `${props.card.name}`).get()
-
-    console.log(props.card.name)
-    console.log(card.empty)
     setAddButton(card.empty)
   }
 
@@ -85,13 +82,17 @@ export function CardInfo(props: infoProps) {
     checkIfInWishlist()
   })
 
+  useLayoutEffect(() => { setArt(0) }, [props.card])
+
   const [showAddButton, setAddButton] = useState(false)
 
   return (
-    <main id="card-info">
+    <main id="card-info" className='rounded'>
 
       <aside style={{ display: 'flex' }}>
-        <img src={props.card.card_images[art].image_url} alt={props.card.name} id="card-image" />
+        {props.card.card_images.length >= cardArt ? <img src={props.card.card_images[cardArt].image_url} alt={props.card.name} id="card-image" />
+          :
+          <img src={props.card.card_images[0].image_url} alt={props.card.name} id="card-image" />}
       </aside>
 
       {props.card.card_images.length > 1 ? <img src={arrow} alt="" id="arr" onClick={changeCardArt} data-bs-toggle="tooltip" data-bs-placement="top" title="Change card artwork" /> : ""}

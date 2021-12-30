@@ -1,8 +1,8 @@
-import firebase from 'firebase';
+import firebase from 'firebase/compat/app';
 import { createContext, Dispatch, ReactNode, useLayoutEffect, useState } from 'react';
 import { auth, firestoreDb } from '../services/firebase';
 import { cardType } from '../components/CardInfo'
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type User = {
   id?: string,
@@ -28,16 +28,16 @@ export const AuthContext = createContext({} as AuthContextType)
 
 export function AuthContextProvider(props: AuthContextProviderProps) {
   const [user, setUser] = useState<User>()
-  const history = useHistory()
+  const navigate = useNavigate()
 
 
   function signOut() {
     auth.signOut()
     setUser({ decks: [""] })
     if (window.location.pathname === '/') {
-      history.go(0)
+      navigate(0)
     } else {
-      history.push('/')
+      navigate('/')
     }
   }
 
@@ -77,7 +77,6 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
     const userRef = await firestoreDb.collection("usuarios").doc(userName).get()
     if (userRef.exists) {
       userData = userRef.data() as User
-      console.log(userData)
     }
 
     let wishlist: cardType[] = []

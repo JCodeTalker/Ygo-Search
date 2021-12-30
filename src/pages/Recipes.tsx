@@ -15,7 +15,6 @@ export function Recipes() {
     cardName = cardName ? cardName : 'complete-list'
     let searchResult: cardType[] = await getCards({ exact: true, name: cardName })
     if (searchResult) {
-      console.log(searchResult)
       setCardList(searchResult)
     }
   }
@@ -26,11 +25,11 @@ export function Recipes() {
 
   return (
     <>
-      <div id="main" className="container-fluid">
+      <div id="main" className="container-fluid" style={{ marginBottom: "50px" }} >
         <MainHeader resolveFunction={handleCardListRequest} />
         <div>
           <div className="row">
-            <div className="col-5" style={{ padding: 0, margin: "0px" }}>
+            <div className="col-5" style={{ padding: 0, margin: "0px", marginTop: "30px" }}>
 
               {cardList.length > 0 && <ScrollableCardList cards={cardList} key={cardList[0].name} />}
 
