@@ -4,7 +4,8 @@ import { MiniCard } from "../MiniCard";
 import "./styles.scss";
 
 type cardListProps = {
-  cards: cardType[]
+  cards: cardType[],
+  setSelectedCard?: React.Dispatch<React.SetStateAction<cardType | undefined>>
 }
 
 export function ScrollableCardList(props: cardListProps) {
@@ -21,10 +22,17 @@ export function ScrollableCardList(props: cardListProps) {
 
 
   return (
-    <div onScroll={handleScroll} id="card-list" style={{ padding: 0 }}>
+    <div onScroll={handleScroll} id="card-list" className="border border-2 rounded-top shadow-sm" style={{ padding: 0 }}>
       {props.cards && props.cards.map((card, index) => {
         if (index < limit) {
-          return <MiniCard card={card} key={index} />
+          return props.setSelectedCard === undefined ?
+            <MiniCard draggable cursor="grabbing" card={card} key={index} />
+            :
+            <button key={index} style={{ padding: 0, height: 'max-content', cursor: 'pointer !important', borderStyle: 'none' }} onClick={() => { props.setSelectedCard && props.setSelectedCard(card) }} >
+              <MiniCard cursor="pointer" draggable={false} card={card} key={index} />
+            </button>
+        } else {
+          return
         }
       }
       )}

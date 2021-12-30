@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap/dist/js/bootstrap.bundle';
-import { BrowserRouter, HashRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/AuthContext'
 import { Home } from './pages/Home';
 import { Recipes } from './pages/Recipes';
@@ -15,15 +15,15 @@ import './styles/global.scss'
 function App() {
   return (
     <>
-      <BrowserRouter basename={process.env.PUBLIC_URL}>
+      <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
         <DndProvider backend={HTML5Backend}>
           <AuthContextProvider>
-            <Switch>
-              <Route path="/" exact={true} component={Home} />
-              <Route path="/Wishlist" exact={true} component={Wishlist} />
-              <Route path="/Recipes" component={Recipes}></Route>
-              <Route path="/Decks" exact={true} component={SavedDecks}></Route>
-            </Switch>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/Wishlist" element={<Wishlist />} />
+              <Route path="/Recipes" element={<Recipes />}></Route>
+              <Route path="/Decks" element={<SavedDecks />}></Route>
+            </Routes>
           </AuthContextProvider>
         </DndProvider>
       </BrowserRouter>

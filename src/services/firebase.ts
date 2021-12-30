@@ -1,7 +1,8 @@
-import firebase from 'firebase/app'
+import firebase from 'firebase/compat/app'
 // import admin from 'firebase-admin'
-import 'firebase/auth'
-import 'firebase/database'
+import 'firebase/compat/auth'
+import 'firebase/compat/database'
+import 'firebase/compat/firestore'
 
 var firebaseConfig = {
   apiKey: process.env.REACT_APP_API_KEY,

@@ -2,11 +2,11 @@ import { useAuth } from '../../hooks/useAuth'
 import googleIcon from '../../images/google-icon.svg'
 import './styles.scss'
 import kuriboh from '../../images/kuriboh.jpg'
-import { useHistory } from 'react-router'
+import { useNavigate } from 'react-router'
 
 export function Description() { // SHOULD CREATE SIGNED IN AND NOT SIGNED START SCREEN SEPARATED!!
   const { user, signInWithGoogle } = useAuth()
-  const history = useHistory()
+  const navigate = useNavigate()
 
   return (
     <>
@@ -20,7 +20,7 @@ export function Description() { // SHOULD CREATE SIGNED IN AND NOT SIGNED START 
             <p className="lead">Here, you can view information on any card in the Yu-Gi-Oh! Trading Card Game, as well as save your deck recipes and create a wish-list of cards that you do not own.
               You can also register your card collection to quickly dig through it.</p>
             <div className="d-grid gap-2 d-md-flex justify-content-md-start">
-              <button type="button" className="btn btn-primary btn-lg px-4 me-md-2" onClick={() => { history.push('/Recipes') }}>Create deck recipe</button>
+              <button type="button" className="btn btn-primary btn-lg px-4 me-md-2" onClick={() => { navigate('/Recipes') }}>Create deck recipe</button>
               {!user &&
                 <button type="button" onClick={signInWithGoogle} className="btn btn-outline-secondary btn-lg px-4" id="sign-in-button"><img src={googleIcon} alt="" className='' style={{ margin: '5px', marginLeft: 0 }} />Sign In with Google</button>
               }

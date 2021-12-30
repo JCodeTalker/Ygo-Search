@@ -15,6 +15,12 @@
   }
 }
 
+.deck-length {
+  display: flex;
+  width: 55vw;
+  justify-content: space-between;
+  align-items: baseline;
+}
 
 #main-deck::-webkit-scrollbar {
   display: none;
@@ -29,7 +35,6 @@
   overflow: auto;
   flex-wrap: wrap;
   padding: 6px;
-  margin: 20px 0;
   justify-content: center;
 
   .mini-card {

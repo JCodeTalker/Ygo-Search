@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router";
 import { useAuth } from '../../hooks/useAuth'
 import avatar from '../../assets/avatar.png'
 
@@ -10,29 +10,25 @@ type formProps = {
 export function MainHeader(props: formProps) {
 
   const [cardName, setCardName] = useState('')
-  const history = useHistory()
+  const navigate = useNavigate()
   const { user, logOut, signInWithGoogle } = useAuth()
 
   function handleNavigation(path: string) {
     if (window.location.pathname === path) {
       document.location.reload()
     } else {
-      history.push(path)
+      navigate(path)
     }
   }
-
 
   return (
     <header className="container-fluid p-3 mb-3 border-bottom" style={{ width: '100%' }}>
       <div className="container">
         <div className="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-          <a href="/" className="d-flex align-items-center mb-2 mb-lg-0 text-dark text-decoration-none">
-          </a>
 
           <ul className="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
             <li><a className="nav-link px-2 link-secondary" onClick={() => { handleNavigation('/') }}>Home</a></li>
             {user?.wishlist && user.wishlist.length > 0 && <li><a className="nav-link px-2 link-dark" onClick={() => { handleNavigation('/wishlist') }}>WishList</a></li>}
-
             <li>
               <a type="button" className="dropdown-toggle nav-link px-2 link-dark" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false" >Anime Series</a>
               <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -47,8 +43,8 @@ export function MainHeader(props: formProps) {
             <li><a href="https://img.yugioh-card.com/en/rulebook/SD_RuleBook_EN_10.pdf" className="nav-link px-2 link-dark" rel="noreferrer" target="_blank">How to Play</a></li>
           </ul>
 
-          <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3" onSubmit={(event) => { event.preventDefault(); props.resolveFunction(cardName) }}>
-            <input type="search" className="form-control" placeholder="Search..." aria-label="Search" onChange={event => setCardName(event.target.value)} autoComplete="on" />
+          <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" onSubmit={(event) => { event.preventDefault(); props.resolveFunction(cardName) }}>
+            <input type="search" id="search" className="form-control" placeholder="Search a card..." aria-label="Search" onChange={event => setCardName(event.target.value)} autoComplete="on" />
           </form>
 
           <div className="dropdown text-end">
@@ -56,9 +52,8 @@ export function MainHeader(props: formProps) {
               <img src={user?.avatar ? user.avatar : avatar} alt="avatar" width="32" height="32" className="rounded-circle" style={{ opacity: 0.5 }} />
             </a>
             <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-              {/* {user && <li><a className="dropdown-item" onClick={() => history.push('/Decks')} >My deck recipes</a></li>} */}
-              <li><a className="dropdown-item" onClick={() => history.push('/Recipes')}>Create a deck</a></li>
-              {/* <li><a className="dropdown-item">Settings</a></li> */}
+              {user && <li><a className="dropdown-item" onClick={() => navigate('/Decks')} >My deck recipes</a></li>}
+              <li><a className="dropdown-item" onClick={() => navigate('/Recipes')}>Create a deck</a></li>
               <li><hr className="dropdown-divider" /></li>
               {user?.name
                 ?
