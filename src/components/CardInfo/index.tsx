@@ -58,7 +58,6 @@ export function CardInfo(props: infoProps) {
       wishlist: newList
     })
 
-    console.log('wishlist: ', contextValues.user?.wishlist)
   }
 
   async function deleteCard(cardName: string) {
@@ -82,15 +81,13 @@ export function CardInfo(props: infoProps) {
     checkIfInWishlist()
   })
 
-  useLayoutEffect(() => { setArt(0) }, [props.card])
-
   const [showAddButton, setAddButton] = useState(false)
 
   return (
     <main id="card-info" className='rounded'>
 
       <aside style={{ display: 'flex' }}>
-        {props.card.card_images.length >= cardArt ? <img src={props.card.card_images[cardArt].image_url} alt={props.card.name} id="card-image" />
+        {props.card.card_images.length - 1 >= cardArt ? <img src={props.card.card_images[cardArt].image_url} alt={props.card.name} id="card-image" />
           :
           <img src={props.card.card_images[0].image_url} alt={props.card.name} id="card-image" />}
       </aside>

@@ -13,11 +13,7 @@ export function SavedDecks() {
 
   useLayoutEffect(() => {
     user?.decks && getDeck(user.decks[deckPosition])
-  }, [user])
-
-  useLayoutEffect(() => {
-    user?.decks && getDeck(user.decks[deckPosition])
-  }, [deckPosition])
+  }, [user, deckPosition])
 
   async function getDeck(deckName: string) {
 
