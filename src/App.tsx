@@ -10,7 +10,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { SavedDecks } from './pages/SavedDecks';
 import Footer from './components/Footer';
 import './styles/global.scss'
-import { useEffect } from 'react';
 import { isMobile } from 'react-device-detect';
 import { TouchBackend } from 'react-dnd-touch-backend';
 
