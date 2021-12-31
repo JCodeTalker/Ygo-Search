@@ -17,20 +17,9 @@ import { TouchBackend } from 'react-dnd-touch-backend';
 // caminhos para as páginas vão aqui.
 function App() {
 
-  useEffect(() => {
-    let ua = navigator.userAgent
-    console.log(ua)
-    if (isMobile) {
-      console.log("mobile browser detected!")
-    } else {
-      console.log("non-mobile browser detected!")
-    }
-  }, [])
-
   return (
     <>
       <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
-        {/* <DndProvider backend={HTML5Backend}> */}
         <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
           <AuthContextProvider>
             <Routes>

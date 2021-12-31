@@ -4,14 +4,14 @@ import { Spinner } from "../components/Spinner"
 import { Description } from "../components/Description"
 import { CardInfo } from "../components/CardInfo"
 import { cardType } from '../components/CardInfo'
-import { useCardSearch } from '../hooks/useCardSearch'
+import { cardSearchFunc } from '../hooks/CardSearch'
 import { MainHeader } from "../components/MainHeader"
 
 export function Home() {
 
     const [cardInfo, setCard] = useState<cardType>();
     const [component, setComponent] = useState('')
-    const cardSearch = useCardSearch
+    const cardSearch = cardSearchFunc
 
     async function handleCardSearch(cardName: string) {
         setComponent('spinner')

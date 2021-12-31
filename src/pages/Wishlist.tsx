@@ -3,14 +3,14 @@ import { useLayoutEffect, useState } from 'react'
 import { CardInfo } from '../components/CardInfo'
 import { cardType } from '../components/CardInfo'
 import { MainHeader } from '../components/MainHeader'
-import { useCardSearch } from '../hooks/useCardSearch'
+import { cardSearchFunc } from '../hooks/CardSearch'
 import { ScrollableCardList } from '../components/ScrollableCardList'
 import '../styles/wishList.scss'
 
 export function Wishlist() {
   const { user } = useAuth()
   const [cardInfo, setCardInfo] = useState<cardType>() // card that get emphasized on screen(on click)
-  const cardSearch = useCardSearch
+  const cardSearch = cardSearchFunc
 
   async function resolveSearch(cardName: string) {
     let [searchResult] = await cardSearch({ exact: true, name: cardName })
@@ -28,7 +28,7 @@ export function Wishlist() {
         <div id="main-wishlist">
           {user?.wishlist && <ScrollableCardList cards={user?.wishlist} setSelectedCard={setCardInfo} />}
         </div>
-        <span id="card-data" >
+        <span id="card-data" className='container-fluid' >
           {cardInfo && <CardInfo card={cardInfo} />}
         </span>
       </div>

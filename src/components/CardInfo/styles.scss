@@ -25,7 +25,8 @@
   }
 
   #card-text {
-    margin: 20px;
+    margin: 20px 20px 20px 8px;
+    // margin: 20px;
   }
   
   #next-art {
@@ -36,5 +37,6 @@
   cursor: pointer;
   height: 40px;
   align-self: center;
+  max-width: 50px;
 }
 }

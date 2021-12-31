@@ -3,7 +3,7 @@ import { Button } from '../Button'
 import { firestoreDb } from '../../services/firebase'
 import { useAuth } from '../../hooks/useAuth'
 import arrow from '../../images/right-arrow.svg'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 export type cardType = {
   name: string,
@@ -78,8 +78,9 @@ export function CardInfo(props: infoProps) {
   }
 
   useEffect(() => {
+    setArt(0)
     checkIfInWishlist()
-  })
+  }, [props.card])
 
   const [showAddButton, setAddButton] = useState(false)
 
@@ -92,7 +93,7 @@ export function CardInfo(props: infoProps) {
           <img src={props.card.card_images[0].image_url} alt={props.card.name} id="card-image" />}
       </aside>
 
-      {props.card.card_images.length > 1 ? <img src={arrow} alt="" id="arr" onClick={changeCardArt} data-bs-toggle="tooltip" data-bs-placement="top" title="Change card artwork" /> : ""}
+      {props.card.card_images.length > 1 && <img src={arrow} id="arr" onClick={changeCardArt} data-bs-toggle="tooltip" data-bs-placement="top" title="Change card artwork" />}
 
       <div id="card-text">
         <h3>{props.card.name}</h3>

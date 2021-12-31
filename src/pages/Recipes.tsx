@@ -3,12 +3,12 @@ import "../styles/recipes.scss";
 import { ScrollableCardList } from "../components/ScrollableCardList";
 import { Decklist } from "../components/Decklist/index";
 import { useLayoutEffect, useState } from 'react';
-import { useCardSearch } from '../hooks/useCardSearch'
+import { cardSearchFunc } from '../hooks/CardSearch'
 import { cardType } from '../components/CardInfo';
 import { MainHeader } from '../components/MainHeader';
 
 export function Recipes() {
-  const getCards = useCardSearch
+  const getCards = cardSearchFunc
   const [cardList, setCardList] = useState<cardType[]>([])
 
   async function handleCardListRequest(cardName?: string) {

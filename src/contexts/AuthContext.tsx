@@ -33,11 +33,12 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
   function signOut() {
     auth.signOut()
-    setUser({ decks: [""] })
+    setUser({})
     if (window.location.pathname === '/') {
       navigate(0)
     } else {
       navigate('/')
+      navigate(0)
     }
   }
 
