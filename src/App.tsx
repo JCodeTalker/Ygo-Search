@@ -18,7 +18,7 @@ function App() {
 
   return (
     <>
-      <BrowserRouter basename={process.env.REACT_APP_PUBLIC_URL}>
+      <BrowserRouter>
         <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
           <AuthContextProvider>
             <Routes>
