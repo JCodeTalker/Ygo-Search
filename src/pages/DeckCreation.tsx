@@ -6,10 +6,12 @@ import { useLayoutEffect, useState } from 'react';
 import { cardSearchFunc } from '../hooks/CardSearch'
 import { cardType } from '../components/CardInfo';
 import { MainHeader } from '../components/MainHeader';
+import { isMobile } from 'react-device-detect';
 
-export function Recipes() {
+export function DeckCreation() {
   const getCards = cardSearchFunc
   const [cardList, setCardList] = useState<cardType[]>([])
+  const [selectedCard, setSelectedCard] = useState<cardType>()
 
   async function handleCardListRequest(cardName?: string) {
     cardName = cardName ? cardName : 'complete-list'
@@ -30,12 +32,10 @@ export function Recipes() {
         <div>
           <div className="row">
             <div className="col-5" style={{ padding: 0, margin: "0px", marginTop: "30px" }}>
-
-              {cardList.length > 0 && <ScrollableCardList cards={cardList} key={cardList[0].name} />}
-
+              {cardList.length > 0 && <ScrollableCardList cards={cardList} key={cardList[0].name} setSelectedCard={isMobile ? setSelectedCard : undefined} />}
             </div>
             <div className="col-7 mt-2">
-              <Decklist saveButton />
+              <Decklist saveButton cardToAdd={isMobile ? selectedCard : undefined} />
             </div>
           </div>
         </div>

@@ -52,8 +52,8 @@ export function MainHeader(props: formProps) {
               <img src={user?.avatar ? user.avatar : avatar} alt="avatar" width="32" height="32" className="rounded-circle" style={{ opacity: 0.5 }} />
             </a>
             <ul className="dropdown-menu text-small" aria-labelledby="dropdownUser1">
-              {user && <li><a className="dropdown-item" onClick={() => navigate('/Decks')} >My deck recipes</a></li>}
-              <li><a className="dropdown-item" onClick={() => navigate('/Recipes')}>Create a deck</a></li>
+              {user && <li><a className="dropdown-item" onClick={() => navigate('/SavedDecks')} >My deck recipes</a></li>}
+              <li><a className="dropdown-item" onClick={() => navigate('/DeckCreation')}>Create a deck</a></li>
               <li><hr className="dropdown-divider" /></li>
               {user?.name
                 ?

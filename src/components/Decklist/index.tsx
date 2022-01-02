@@ -9,20 +9,21 @@ import './styles.scss'
 
 export type cardObj = {
   name: string,
-  content?: cardType,
+  content: cardType,
   count: number
 }
 
 export type cardListType = cardObj[]
 
 type dropItemType = {
-  id: number, cardData: cardType, name: string, draggable: boolean
+  id?: number, cardData: cardType, name: string, draggable?: boolean
 }
 
 type DeckProps = {
   saveButton: boolean,
   mainDeckCards?: cardListType,
-  extraDeckCards?: cardListType
+  extraDeckCards?: cardListType,
+  cardToAdd?: cardType
 }
 
 export function Decklist(props: DeckProps) {
@@ -40,19 +41,14 @@ export function Decklist(props: DeckProps) {
   const [, dropRef] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType) => {
-      if (!item.cardData.type.includes("Synchro") && !item.cardData.type.includes("XYZ") && !item.cardData.type.includes("Link") && !item.cardData.type.includes("Fusion") && item.draggable) {
-        setMainDrop(item)
-      }
+      !isExtraDeckType(item.cardData.type) && setMainDrop(item)
     }
   }))
-
 
   const [, dropRef2] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType) => {
-      if ((item.cardData.type.includes("Synchro") || item.cardData.type.includes("XYZ") || item.cardData.type.includes("Link") || item.cardData.type.includes("Fusion")) && item.draggable) {
-        setExtraDrop(item)
-      }
+      isExtraDeckType(item.cardData.type) && setExtraDrop(item)
     }
   }))
 
@@ -65,7 +61,7 @@ export function Decklist(props: DeckProps) {
       return
     }
 
-    let cardDroppedLastIndex = deckPart.findIndex(card => card.name === cardDropped.name) // get the index of the current dropped item(if it exists)
+    let cardDroppedLastIndex = deckPart.findIndex(card => card.name === cardDropped.name) // get the index of the current dropped item(if it's already on the decklist)
 
     if (cardDroppedLastIndex === -1) {  // if there's a deck, but the card being dragged not in list
       let list = deckPart
@@ -112,15 +108,38 @@ export function Decklist(props: DeckProps) {
     }
   }
 
+  function toMiniCard(card: cardObj) {
+    let miniCards = []
+    for (let i = 0; i < card.count; i++) {
+      miniCards.push(card.content && <MiniCard cursor="" draggable={false} card={card.content} key={i} />)
+    }
+
+    return miniCards
+  }
+
+  function isExtraDeckType(cardType: string) {
+    let extraDeckCardTypes = ["Synchro", "Fusion", "XYZ", "Link"]
+    return extraDeckCardTypes.some(type => cardType.includes(type))
+  }
+
+  useEffect(() => { // only used in mobile
+    if (props.cardToAdd) {
+      !isExtraDeckType(props.cardToAdd.type) ?
+        addDropToDeck({ name: props.cardToAdd.name, cardData: props.cardToAdd }, mainDeck, setMainDeck, setDeckLength)
+        :
+        addDropToDeck({ name: props.cardToAdd.name, cardData: props.cardToAdd }, extraDeck, setExtraDeck, setExtraDeckLength)
+    }
+  }, [props.cardToAdd])
+
   useEffect(() => { // adds dragged cards to main deck component
-    if (mainDeck && provideDeckPartLength(mainDeck) === 61) {
+    if (mainDeck && deckLength === 61) {
       return
     }
     mainDeckDrop && addDropToDeck(mainDeckDrop, mainDeck, setMainDeck, setDeckLength)
   }, [mainDeckDrop])
 
   useEffect(() => { // adds dragged cards to extra deck component
-    if (extraDeck && provideDeckPartLength(extraDeck) === 16) {
+    if (extraDeck && extraDeckLength === 16) {
       return
     }
     extraDeckDrop && addDropToDeck(extraDeckDrop, extraDeck, setExtraDeck, setExtraDeckLength)
@@ -133,20 +152,6 @@ export function Decklist(props: DeckProps) {
     if (props.extraDeckCards) setExtraDeck(props.extraDeckCards)
   }, [props.mainDeckCards, props.extraDeckCards])
 
-  function toMiniCard(card: cardObj) {
-    let miniCards = []
-    for (let i = 0; i < card.count; i++) {
-      miniCards.push(card.content && <MiniCard cursor="" draggable={false} card={card.content} key={i} />)
-    }
-
-    return miniCards
-  }
-
-  function provideDeckPartLength(deckPart: cardListType) {
-    return deckPart.reduce((total: number, card) => {
-      return total + card.count
-    }, 1)
-  }
 
   return (
     <>
@@ -175,9 +180,9 @@ export function Decklist(props: DeckProps) {
       </div>
 
       <span className="deck-length" >
-        <h5>Main Deck</h5>
+        <h5>Main Deck:</h5>
         {deckLength > 0 ?
-          <h6 style={{ color: 'blue' }} >{deckLength} card{deckLength > 1 && 's'}(minimum: 40).</h6>
+          <h6 style={{ color: 'blue' }} >{deckLength} card{deckLength > 1 && 's'}(min.: 40).</h6>
           :
           <h6 style={{ color: 'red' }} className={`${!props.saveButton && 'invisible'}`} >Empty</h6>
         }
@@ -185,13 +190,13 @@ export function Decklist(props: DeckProps) {
       <div id="main-deck" ref={dropRef} className="rounded">
         {mainDeck?.map((card) => toMiniCard(card))}
       </div>
-      {mainDeck && provideDeckPartLength(mainDeck) >= 41 ? //should be 41
+      {mainDeck && deckLength >= 41 ? //for minimum deck size
         <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`} data-bs-toggle="modal" data-bs-target="#exampleModal" >
           Save recipe
         </button>
         : ""}
       <span className="mt-2 deck-length">
-        <h5>Extra Deck</h5>
+        <h5>Extra Deck:</h5>
         {extraDeckLength > 0 && <h6>{extraDeckLength} card{extraDeckLength > 1 && 's'}(maximum: 15).</h6>}
       </span>
       <div id="extra-deck" ref={dropRef2} className="rounded">

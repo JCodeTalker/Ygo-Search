@@ -2,14 +2,13 @@
   display: flex;
   background-color: gray;
   height: 60vh;
-  width: 55vw;
   overflow: auto;
   flex-wrap: wrap;
   padding: 6px;
   justify-content: center;
 
   .mini-card {
-    height: 16vh;
+    height: 14vh;
     margin: 3px;
     padding: 0;
   }
@@ -17,7 +16,6 @@
 
 .deck-length {
   display: flex;
-  width: 55vw;
   justify-content: space-between;
   align-items: baseline;
 }
@@ -30,8 +28,7 @@
 #extra-deck {
   display: flex;
   background-color: gray;
-  height: 22vh;
-  width: 55vw;
+  height: 24vh;
   overflow: auto;
   flex-wrap: wrap;
   padding: 6px;
@@ -41,5 +38,14 @@
     height: 16vh;
     margin: 3px;
     padding: 0;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  h5 {
+    font-size: 16px;
+  }
+  h6 {
+    font-size: 10px;
   }
 }

@@ -13,3 +13,21 @@
   max-width: 172px;
   max-height: 250px;
 }
+
+@media screen and (max-width: 768px) {
+  .mini-card {
+    width: 17vw;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  .mini-card {
+    width: 16.5vw;
+  }
+}
+
+// @media screen and (max-width: 768px) {
+//   .mini-card {
+//     width: 17vw;
+//   }
+// }

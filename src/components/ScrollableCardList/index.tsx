@@ -10,7 +10,7 @@ type cardListProps = {
 
 export function ScrollableCardList(props: cardListProps) {
 
-  const [limit, setLimit] = useState(29)
+  const [limitOnScreen, setLimit] = useState(29)
 
   const handleScroll = (event: React.UIEvent<HTMLElement>) => {
     const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
@@ -24,7 +24,7 @@ export function ScrollableCardList(props: cardListProps) {
   return (
     <div onScroll={handleScroll} id="card-list" className="border border-2 rounded-top shadow-sm" style={{ padding: 0 }}>
       {props.cards && props.cards.map((card, index) => {
-        if (index < limit) {
+        if (index < limitOnScreen) {
           return props.setSelectedCard === undefined ?
             <MiniCard draggable cursor="grabbing" card={card} key={index} />
             :

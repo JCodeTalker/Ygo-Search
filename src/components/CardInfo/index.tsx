@@ -1,9 +1,7 @@
 import './styles.scss'
-import { Button } from '../Button'
-import { firestoreDb } from '../../services/firebase'
-import { useAuth } from '../../hooks/useAuth'
 import arrow from '../../images/right-arrow.svg'
 import { useEffect, useState } from 'react'
+import { AddToWishlistButton } from '../AddToWishListButton'
 
 export type cardType = {
   name: string,
@@ -28,7 +26,6 @@ type infoProps = {
 }
 
 export function CardInfo(props: infoProps) {
-  const contextValues = useAuth()
   const desc = props.card.desc.split('\n').map((str, index) => <p key={index}>{str}</p>)
   const [cardArt, setArt] = useState(0)
 
@@ -40,49 +37,10 @@ export function CardInfo(props: infoProps) {
     }
   }
 
-  function addToWishlist() {
-    if (contextValues.user?.name) {
-      firestoreDb.collection('usuarios').doc(`${contextValues.user?.name}/Card WishList/${props.card.name}`).set(props.card)
-      alert('Success!')
-    }
-    else {
-      alert('You must log in first.')
-    }
-
-    let newList: cardType[] | undefined = contextValues.user?.wishlist
-
-    newList?.push(props.card)
-
-    contextValues.setUser({
-      ...contextValues.user,
-      wishlist: newList
-    })
-
-  }
-
-  async function deleteCard(cardName: string) {
-    let newWishList = contextValues.user?.wishlist?.filter(card => card.name !== cardName)
-
-    contextValues.setUser({
-      ...contextValues.user,
-      wishlist: newWishList
-    })
-
-    await firestoreDb.collection("usuarios").doc(`${contextValues.user?.name}`).collection("Card WishList").doc(cardName).delete();
-    alert('Successfully deleted!')
-  }
-
-  async function checkIfInWishlist() {
-    const card = await firestoreDb.collection(`usuarios/${contextValues.user?.name}/Card WishList`).where('name', '==', `${props.card.name}`).get()
-    setAddButton(card.empty)
-  }
-
   useEffect(() => {
     setArt(0)
-    checkIfInWishlist()
   }, [props.card])
 
-  const [showAddButton, setAddButton] = useState(false)
 
   return (
     <main id="card-info" className='rounded'>
@@ -107,8 +65,7 @@ export function CardInfo(props: infoProps) {
 
         <div>
           {props.card.atk ? <p><em>ATK:</em> {props.card.atk} | <em>DEF:</em> {props.card.def} </p> : ''}
-
-          {showAddButton ? <Button onClick={addToWishlist} className="btn btn-primary">Add to wishlist</Button> : <Button onClick={() => { deleteCard(props.card.name) }} className="btn btn-primary">Remove from wishlist</Button>}
+          <AddToWishlistButton card={props.card} />
         </div>
       </div>
     </main>

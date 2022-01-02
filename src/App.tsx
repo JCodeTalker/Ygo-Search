@@ -3,7 +3,7 @@ import 'bootstrap/dist/js/bootstrap.bundle';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { AuthContextProvider } from './contexts/AuthContext'
 import { Home } from './pages/Home';
-import { Recipes } from './pages/Recipes';
+import { DeckCreation } from './pages/DeckCreation';
 import { Wishlist } from './pages/Wishlist'
 import { DndProvider } from 'react-dnd'
 import { HTML5Backend } from 'react-dnd-html5-backend'
@@ -19,13 +19,14 @@ function App() {
   return (
     <>
       <BrowserRouter>
-        <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}>
+        <DndProvider backend={HTML5Backend}>
+          {/* <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}> */}
           <AuthContextProvider>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/Wishlist" element={<Wishlist />} />
-              <Route path="/Recipes" element={<Recipes />}></Route>
-              <Route path="/Decks" element={<SavedDecks />}></Route>
+              <Route path="/DeckCreation" element={<DeckCreation />}></Route>
+              <Route path="/SavedDecks" element={<SavedDecks />}></Route>
             </Routes>
           </AuthContextProvider>
         </DndProvider>

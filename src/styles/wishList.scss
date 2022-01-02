@@ -1,10 +1,20 @@
 #main-wishlist {
   width: 41vw;
+  // margin-left: 0;
 }
 
 #card-data {
   max-width: 54vw;
   img {
     width: 20vw;
+  }
+}
+
+@media screen and (max-width: 380px) {
+  #card-data {
+    width: auto;
+    img {
+      width: auto;
+    }
   }
 }
