@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from "react"
+import { FormEvent, useState } from "react"
 import { useDrop } from "react-dnd"
 import { useAuth } from "../../hooks/useAuth"
 import { firestoreDb } from "../../services/firebase"
@@ -15,25 +15,23 @@ export type cardObj = {
 
 export type cardListType = cardObj[]
 
-type dropItemType = {
+export type dropItemType = {
   id?: number, cardData: cardType, name: string, draggable?: boolean
 }
 
 type DeckProps = {
+  deckLength?: number,
+  extraDeckLength?: number,
   saveButton: boolean,
-  mainDeckCards?: cardListType,
-  extraDeckCards?: cardListType,
-  cardToAdd?: cardType
+  mainDeckCards: cardListType | undefined,
+  extraDeckCards: cardListType | undefined,
+  setMainDrop?: React.Dispatch<React.SetStateAction<dropItemType | undefined>>
+  setExtraDrop?: React.Dispatch<React.SetStateAction<dropItemType | undefined>>
+  isExtraDeckType?: (cardType: string) => boolean
 }
 
 export function Decklist(props: DeckProps) {
 
-  const [mainDeck, setMainDeck] = useState<cardListType>()
-  const [mainDeckDrop, setMainDrop] = useState<dropItemType>()
-  const [extraDeck, setExtraDeck] = useState<cardListType>()
-  const [extraDeckDrop, setExtraDrop] = useState<dropItemType>()
-  const [deckLength, setDeckLength] = useState(0)
-  const [extraDeckLength, setExtraDeckLength] = useState(0)
   const [deckName, setDeckName] = useState("")
   const { user } = useAuth()
 
@@ -41,59 +39,27 @@ export function Decklist(props: DeckProps) {
   const [, dropRef] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType) => {
-      !isExtraDeckType(item.cardData.type) && setMainDrop(item)
+      if (props.setMainDrop && props.isExtraDeckType)
+        !props.isExtraDeckType(item.cardData.type) && props.setMainDrop(item)
     }
   }))
 
   const [, dropRef2] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType) => {
-      isExtraDeckType(item.cardData.type) && setExtraDrop(item)
+      if (props.setExtraDrop && props.isExtraDeckType)
+        props.isExtraDeckType(item.cardData.type) && props.setExtraDrop(item)
     }
   }))
-
-  function addDropToDeck(cardDropped: dropItemType, deckPart: cardListType | undefined,
-    setListState: React.Dispatch<React.SetStateAction<cardListType | undefined>>, setDeckLength: React.Dispatch<React.SetStateAction<number>>) {
-
-    if (!deckPart) { // if deck is empty
-      setListState([{ name: cardDropped.name, count: 1, content: cardDropped.cardData }])
-      setDeckLength(prev => prev + 1)
-      return
-    }
-
-    let cardDroppedLastIndex = deckPart.findIndex(card => card.name === cardDropped.name) // get the index of the current dropped item(if it's already on the decklist)
-
-    if (cardDroppedLastIndex === -1) {  // if there's a deck, but the card being dragged not in list
-      let list = deckPart
-      list.push({ name: cardDropped.name, count: 1, content: cardDropped.cardData })
-      setListState(list)
-      setDeckLength(prev => prev + 1)
-    }
-
-    if (cardDroppedLastIndex !== -1 && deckPart[cardDroppedLastIndex].count < 3) {  // if card already in list
-      let newList = deckPart.filter((item, pos) => pos !== cardDroppedLastIndex)
-      setListState([
-        ...newList,
-        {
-          name: cardDropped.name,
-          content: cardDropped.cardData,
-          count: deckPart[cardDroppedLastIndex].count + 1
-        }
-      ])
-      setDeckLength(prev => prev + 1)
-    } else {  // if full(i.e, already has 3 copies of the card)
-      return
-    }
-  }
 
   async function saveRecipe(event: FormEvent) {
     event.preventDefault()
     if (user) {
       let batch = firestoreDb.batch()
-      mainDeck?.forEach(card => {
+      props.mainDeckCards?.forEach(card => {
         batch.set(firestoreDb.collection('usuarios').doc(`${user.name}/${deckName}/${card.name}`), card)
       })
-      extraDeck?.forEach(card => {
+      props.extraDeckCards?.forEach(card => {
         batch.set(firestoreDb.collection('usuarios').doc(`${user.name}/${deckName}/Extra Deck/Extra Deck/${card.name}`), card)
       })
       batch.commit()
@@ -116,42 +82,6 @@ export function Decklist(props: DeckProps) {
 
     return miniCards
   }
-
-  function isExtraDeckType(cardType: string) {
-    let extraDeckCardTypes = ["Synchro", "Fusion", "XYZ", "Link"]
-    return extraDeckCardTypes.some(type => cardType.includes(type))
-  }
-
-  useEffect(() => { // only used in mobile
-    if (props.cardToAdd) {
-      !isExtraDeckType(props.cardToAdd.type) ?
-        addDropToDeck({ name: props.cardToAdd.name, cardData: props.cardToAdd }, mainDeck, setMainDeck, setDeckLength)
-        :
-        addDropToDeck({ name: props.cardToAdd.name, cardData: props.cardToAdd }, extraDeck, setExtraDeck, setExtraDeckLength)
-    }
-  }, [props.cardToAdd])
-
-  useEffect(() => { // adds dragged cards to main deck component
-    if (mainDeck && deckLength === 61) {
-      return
-    }
-    mainDeckDrop && addDropToDeck(mainDeckDrop, mainDeck, setMainDeck, setDeckLength)
-  }, [mainDeckDrop])
-
-  useEffect(() => { // adds dragged cards to extra deck component
-    if (extraDeck && extraDeckLength === 16) {
-      return
-    }
-    extraDeckDrop && addDropToDeck(extraDeckDrop, extraDeck, setExtraDeck, setExtraDeckLength)
-  }, [extraDeckDrop])
-
-  useEffect(() => {
-    if (props.mainDeckCards) {
-      setMainDeck(props.mainDeckCards)
-    }
-    if (props.extraDeckCards) setExtraDeck(props.extraDeckCards)
-  }, [props.mainDeckCards, props.extraDeckCards])
-
 
   return (
     <>
@@ -181,26 +111,26 @@ export function Decklist(props: DeckProps) {
 
       <span className="deck-length" >
         <h5>Main Deck:</h5>
-        {deckLength > 0 ?
-          <h6 style={{ color: 'blue' }} >{deckLength} card{deckLength > 1 && 's'}(min.: 40).</h6>
+        {props.deckLength && props.deckLength > 0 ?
+          <h6 style={{ color: 'blue' }} >{props.deckLength} card{props.deckLength > 1 && 's'}(min.: 40).</h6>
           :
           <h6 style={{ color: 'red' }} className={`${!props.saveButton && 'invisible'}`} >Empty</h6>
         }
       </span>
       <div id="main-deck" ref={dropRef} className="rounded">
-        {mainDeck?.map((card) => toMiniCard(card))}
+        {props.mainDeckCards?.map((card) => toMiniCard(card))}
       </div>
-      {mainDeck && deckLength >= 41 ? //for minimum deck size
+      {props.deckLength && props.mainDeckCards && props.deckLength >= 41 ? //for minimum deck size
         <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`} data-bs-toggle="modal" data-bs-target="#exampleModal" >
           Save recipe
         </button>
         : ""}
       <span className="mt-2 deck-length">
         <h5>Extra Deck:</h5>
-        {extraDeckLength > 0 && <h6>{extraDeckLength} card{extraDeckLength > 1 && 's'}(maximum: 15).</h6>}
+        {props.extraDeckLength && props.extraDeckLength > 0 && <h6>{props.extraDeckLength} card{props.extraDeckLength > 1 && 's'}(maximum: 15).</h6>}
       </span>
       <div id="extra-deck" ref={dropRef2} className="rounded">
-        {extraDeck?.map(card => toMiniCard(card))}
+        {props.extraDeckCards?.map(card => toMiniCard(card))}
       </div>
     </>
   )

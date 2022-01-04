@@ -7,7 +7,6 @@ import { cardSearchFunc } from '../hooks/CardSearch'
 import { ScrollableCardList } from '../components/ScrollableCardList'
 import '../styles/wishList.scss'
 import { CardMobile } from '../components/CardInfoMobile'
-import { isMobile } from 'react-device-detect'
 
 export function Wishlist() {
   const { user } = useAuth()

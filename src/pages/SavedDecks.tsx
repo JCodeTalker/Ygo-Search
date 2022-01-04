@@ -47,7 +47,9 @@ export function SavedDecks() {
           <div className="col-8">
             <div className="tab-content" id="nav-tabContent">
               {user?.decks?.map((deckName, index) => (
-                <div key={index - 1000} className={`tab-pane fade ${index === 0 && "show active"}`} id={`list-${deckName}`.replace(/\s+/g, '-')} role="tabpanel" aria-labelledby={`list-${deckName}-list`.replace(/\s+/g, '-')} > {user.decks && <Decklist saveButton={false} mainDeckCards={mainDeck} extraDeckCards={extraDeck} />} </div>
+                <div key={index - 1000} className={`tab-pane fade ${index === 0 && "show active"}`} id={`list-${deckName}`.replace(/\s+/g, '-')} role="tabpanel" aria-labelledby={`list-${deckName}-list`.replace(/\s+/g, '-')} >
+                  {user.decks && mainDeck && <Decklist saveButton={false} mainDeckCards={mainDeck} extraDeckCards={extraDeck} />}
+                </div>
               ))}
             </div>
           </div>
