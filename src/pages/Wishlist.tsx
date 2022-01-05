@@ -6,13 +6,18 @@ import { MainHeader } from '../components/MainHeader'
 import { cardSearchFunc } from '../hooks/CardSearch'
 import { ScrollableCardList } from '../components/ScrollableCardList'
 import { CardMobile } from '../components/CardInfoMobile'
-import '../styles/wishList.scss'
 import { Spinner } from '../components/Spinner'
+import '../styles/wishList.scss'
 
 export function Wishlist() {
   const { user } = useAuth()
   const [cardInfo, setCardInfo] = useState<cardType>() // card that get emphasized on screen(on click)
   const cardSearch = cardSearchFunc
+  const [isDesktop, setDesktop] = useState(window.innerWidth > 940)
+
+  const updateMedia = () => {
+    setDesktop(window.innerWidth > 940)
+  }
 
   async function resolveSearch(cardName: string) {
     let [searchResult] = await cardSearch({ exact: true, name: cardName })
@@ -23,6 +28,11 @@ export function Wishlist() {
     user?.wishlist && setCardInfo(user.wishlist[0])
   }, [user])
 
+  useLayoutEffect(() => {
+    window.addEventListener("resize", updateMedia)
+    return () => window.removeEventListener("resize", updateMedia)
+  })
+
   return (
     <>
       <MainHeader resolveFunction={resolveSearch} />
@@ -32,7 +42,7 @@ export function Wishlist() {
             <ScrollableCardList cards={user?.wishlist} setSelectedCard={setCardInfo} />
           </div>
           <span id="card-data" className='container-fluid p-0' >
-            {window.screen.width <= 480 ?
+            {!isDesktop ?
               cardInfo && <CardMobile cardData={cardInfo} />
               :
               cardInfo && <CardInfo card={cardInfo} />}

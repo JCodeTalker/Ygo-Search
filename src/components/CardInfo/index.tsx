@@ -60,7 +60,7 @@ export function CardInfo(props: infoProps) {
         <div id="desc" style={{ margin: '5px' }} className='m-0 p-2'>
           {desc}
           <div>
-            <p className="m-0" style={{ whiteSpace: 'pre-wrap' }}><em>ATK:</em> {props.card.atk} <em>{`${props.card.type !== "Link Monster" ? "| DEF:" : ""}`}</em> {props.card.def} </p>
+            {props.card.atk && <p className="m-0" style={{ whiteSpace: 'pre-wrap' }}><em>ATK:</em> {props.card.atk} <em>{`${props.card.type !== "Link Monster" ? "| DEF:" : ""}`}</em> {props.card.def} </p>}
           </div>
         </div>
         <AddToWishlistButton card={props.card} />
