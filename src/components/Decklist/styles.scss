@@ -1,17 +1,32 @@
-#main-deck {
+@mixin deck-general-style {
   display: flex;
   background-color: gray;
-  height: 60vh;
   overflow: auto;
   flex-wrap: wrap;
   padding: 6px;
-  justify-content: center;
 
   .mini-card {
-    height: 14vh;
+    max-height: 16.1vh;
     margin: 3px;
     padding: 0;
   }
+}
+
+#main-deck {
+  @include deck-general-style;
+  height: 60vh;
+}
+
+#extra-deck {
+  @include deck-general-style;
+  height: 24vh;
+}
+
+ #extra-deck::-webkit-scrollbar {
+  display: none;
+}
+ #main-deck::-webkit-scrollbar {
+  display: none;
 }
 
 .deck-length {
@@ -20,32 +35,26 @@
   align-items: baseline;
 }
 
-#main-deck::-webkit-scrollbar {
-  display: none;
-}
-
-
-#extra-deck {
-  display: flex;
-  background-color: gray;
-  height: 24vh;
-  overflow: auto;
-  flex-wrap: wrap;
-  padding: 6px;
-  justify-content: center;
-
-  .mini-card {
-    height: 16vh;
-    margin: 3px;
-    padding: 0;
-  }
-}
-
 @media screen and (max-width: 480px) {
   h5 {
     font-size: 16px;
   }
   h6 {
     font-size: 10px;
+  }
+  #main-deck, #extra-deck {
+    .mini-card {
+    height: 9vh;
+    width: 10.5vw;
+    }
+  }
+}
+
+@media screen and (max-width: 360px) {
+  #main-deck, #extra-deck {
+    .mini-card {
+    height: 10vh;
+    width: 9.8vw;
+    }
   }
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { cardType } from "../CardInfo"
 import { dropItemType } from "../Decklist";
 import { MiniCard } from "../MiniCard";
@@ -22,16 +22,12 @@ export function ScrollableCardList(props: cardListProps) {
     }
   }
 
-  useEffect(() => {
-    console.log(props.setSelectedCard)
-  }, [props.setSelectedCard])
-
   return (
     <div onScroll={handleScroll} id="card-list" className="border border-2 rounded-top shadow-sm" style={{ padding: 0 }}>
       {props.cards && props.cards.map((card, index) => {
         if (index < limitOnScreen) {
           return props.addCardToDeck || props.setSelectedCard ?
-            <button key={index} style={{ padding: 0, height: 'max-content', cursor: 'pointer !important', borderStyle: 'none' }}
+            <button className="clickable-card" key={index}
               onClick={() => {
                 if (props.addCardToDeck) {
                   props.addCardToDeck && props.addCardToDeck({ name: card.name, cardData: card })

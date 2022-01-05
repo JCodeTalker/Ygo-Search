@@ -1,5 +1,6 @@
 import { AddToWishlistButton } from "../AddToWishListButton"
 import { cardType } from "../CardInfo"
+import "./styles.scss";
 
 type cardMobileProps = {
   cardData: cardType
@@ -8,16 +9,18 @@ type cardMobileProps = {
 export function CardMobile(props: cardMobileProps) {
   return (
     <>
-      <div className="card mt-2" style={{ width: "fit-content" }}>
-        <img src={props.cardData.card_images[0].image_url} alt="..." style={{ width: "175px" }} />
-        <div className="card-body" style={{ height: "260px", overflowY: "auto" }}>
-          <h5 className="card-title"> {props.cardData.name} </h5>
-          <div className="card-text"> {props.cardData.desc}
+      <div className="card mt-2" >
+        <img src={props.cardData.card_images[0].image_url} alt="..." style={{ width: "100%" }} />
+        <h5 className="card-title p-3 m-0 border-bottom"> {props.cardData.name} </h5>
+        <div className="card-body">
+          <div className="card-text" style={{ whiteSpace: 'pre-wrap', textAlign: 'initial' }} > {props.cardData.desc}
             <br />
-            {props.cardData.atk ? <p><em>ATK:</em> {props.cardData.atk} | <em>DEF:</em> {props.cardData.def} </p> : ''}
           </div>
-          <AddToWishlistButton card={props.cardData} />
         </div>
+        <span className="p-2 mx-auto border-top" >
+          {props.cardData.atk ? <p className="m-0"><em>ATK:</em> {props.cardData.atk} <em>{`${props.cardData.type !== "Link Monster" ? "| DEF:" : ""}`}</em> {props.cardData.def} </p> : ''}
+          <AddToWishlistButton card={props.cardData} />
+        </span>
       </div>
     </>
   )

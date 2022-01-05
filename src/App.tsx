@@ -10,8 +10,6 @@ import { HTML5Backend } from 'react-dnd-html5-backend'
 import { SavedDecks } from './pages/SavedDecks';
 import Footer from './components/Footer';
 import './styles/global.scss'
-import { isMobile } from 'react-device-detect';
-import { TouchBackend } from 'react-dnd-touch-backend';
 
 // caminhos para as páginas vão aqui.
 function App() {
@@ -20,7 +18,6 @@ function App() {
     <>
       <BrowserRouter>
         <DndProvider backend={HTML5Backend}>
-          {/* <DndProvider backend={isMobile ? TouchBackend : HTML5Backend}> */}
           <AuthContextProvider>
             <Routes>
               <Route path="/" element={<Home />} />

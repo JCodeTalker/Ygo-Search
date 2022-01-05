@@ -3,6 +3,19 @@
   flex-wrap: wrap;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch; 
-  height: 89.5vh;
+  height: 90.5vh;
   margin: 10px;
+  justify-content: center;
+
+  .clickable-card {
+    padding: 0;
+    border-style: none;
+  }
+}
+
+@media screen and (max-width: 480px) {
+.mini-card {
+  height: 15vh;
+  width: 16vw;
+}
 }

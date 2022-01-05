@@ -1,8 +1,10 @@
 import { useLayoutEffect, useState } from "react";
 import { cardListType, cardObj, Decklist } from "../components/Decklist";
 import { MainHeader } from "../components/MainHeader";
+import { Spinner } from "../components/Spinner";
 import { useAuth } from "../hooks/useAuth";
 import { firestoreDb } from "../services/firebase";
+import '../styles/savedecks.scss'
 
 export function SavedDecks() {
 
@@ -37,23 +39,30 @@ export function SavedDecks() {
     <>
       <MainHeader resolveFunction={() => { }} />
       <div className="container mt-5">
-        <div className="row">
-          <div className="col-4">
-            <div className="list-group" id="list-tab" role="tablist" style={{ marginTop: "32px" }} >
-              {user?.decks?.map((deckName, index) =>
-                (<a key={index} onClick={() => setDeckPosition(index)} className={`list-group-item list-group-item-action ${index === 0 && "active"}`} id={`list-${deckName}-list`.replace(/\s+/g, '-')} data-bs-toggle="list" href={`#list-${deckName}`.replace(/\s+/g, '-')} role="tab" aria-controls={`list-${deckName}`.replace(/\s+/g, '-')} >{deckName}</a>))}
+        {user ?
+          <div className="row">
+            <div className="col-4">
+              <div className="list-group" id="list-tab" role="tablist" style={{ marginTop: "32px" }} >
+                {user?.decks?.map((deckName, index) =>
+                  (<a key={index} onClick={() => setDeckPosition(index)} className={`list-group-item list-group-item-action ${index === 0 && "active"}`} id={`list-${deckName}-list`.replace(/\s+/g, '-')} data-bs-toggle="list" href={`#list-${deckName}`.replace(/\s+/g, '-')} role="tab" aria-controls={`list-${deckName}`.replace(/\s+/g, '-')} >{deckName}</a>))}
+              </div>
+            </div>
+            <div className="col-8">
+              <div className="tab-content" id="nav-tabContent" style={{ width: "56vw" }} >
+                {user?.decks?.map((deckName, index) => (
+                  <div style={{ justifyContent: 'flex-start' }} key={index - 1000} className={`tab-pane fade ${index === 0 && "show active"}`}
+                    id={`list-${deckName}`.replace(/\s+/g, '-')} role="tabpanel" aria-labelledby={`list-${deckName}-list`.replace(/\s+/g, '-')} >
+                    {user.decks && mainDeck && <Decklist saveButton={false} mainDeckCards={mainDeck} extraDeckCards={extraDeck} />}
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
-          <div className="col-8">
-            <div className="tab-content" id="nav-tabContent">
-              {user?.decks?.map((deckName, index) => (
-                <div key={index - 1000} className={`tab-pane fade ${index === 0 && "show active"}`} id={`list-${deckName}`.replace(/\s+/g, '-')} role="tabpanel" aria-labelledby={`list-${deckName}-list`.replace(/\s+/g, '-')} >
-                  {user.decks && mainDeck && <Decklist saveButton={false} mainDeckCards={mainDeck} extraDeckCards={extraDeck} />}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
+          :
+          <span style={{ justifyContent: 'center' }} className="container-fluid d-flex" >
+            <Spinner />
+          </span>
+        }
       </div>
     </>
   )

@@ -3,9 +3,11 @@ import '../styles/home.scss'
 import { Spinner } from "../components/Spinner"
 import { Description } from "../components/Description"
 import { CardInfo } from "../components/CardInfo"
+import { CardMobile } from "../components/CardInfoMobile"
 import { cardType } from '../components/CardInfo'
 import { cardSearchFunc } from '../hooks/CardSearch'
 import { MainHeader } from "../components/MainHeader"
+import { isMobile } from "react-device-detect"
 
 export function Home() {
 
@@ -32,12 +34,14 @@ export function Home() {
             case "spinner":
                 return <Spinner />
             case "card":
-                if (cardInfo) { return <CardInfo card={cardInfo} /> }
+                if (cardInfo) {
+                    return isMobile ? <span className="container" ><CardMobile cardData={cardInfo} /></span> : <CardInfo card={cardInfo} />
+                }
                 break
             case 'description':
-                return <Description></Description>
+                return <Description />
             default:
-                return <Description></Description>
+                return <Description />
         }
     }
 

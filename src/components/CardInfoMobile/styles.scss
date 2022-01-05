@@ -1,0 +1,8 @@
+.card {
+  text-align: center;
+  .card-body {
+    max-height: 200px;
+    overflow-y: auto;
+    font-style: italic;
+  }
+}

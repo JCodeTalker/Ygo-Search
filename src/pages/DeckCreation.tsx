@@ -8,6 +8,12 @@ import { cardType } from '../components/CardInfo';
 import { MainHeader } from '../components/MainHeader';
 import { isMobile } from 'react-device-detect';
 
+
+export function isExtraDeckType(cardType: string) {
+  let extraDeckCardTypes = ["Synchro", "Fusion", "XYZ", "Link"]
+  return extraDeckCardTypes.some(type => cardType.includes(type))
+}
+
 export function DeckCreation() {
   const getCards = cardSearchFunc
   const [cardList, setCardList] = useState<cardType[]>([])
@@ -18,12 +24,9 @@ export function DeckCreation() {
   const [deckLength, setDeckLength] = useState(0)
   const [extraDeckLength, setExtraDeckLength] = useState(0)
 
-  function isExtraDeckType(cardType: string) {
-    let extraDeckCardTypes = ["Synchro", "Fusion", "XYZ", "Link"]
-    return extraDeckCardTypes.some(type => cardType.includes(type))
-  }
 
   function addCardToDeck(cardDropped: dropItemType) {
+    if (deckLength === 60 || extraDeckLength === 15) return
 
     let deckPart
     let setListState
@@ -82,25 +85,12 @@ export function DeckCreation() {
   }, [])
 
   useEffect(() => { // adds dragged cards to main deck component
-    if (mainDeck && deckLength === 61) {
-      return
-    }
     mainDeckDrop && addCardToDeck(mainDeckDrop)
   }, [mainDeckDrop])
 
   useEffect(() => { // adds dragged cards to extra deck component
-    if (extraDeck && extraDeckLength === 16) {
-      return
-    }
     extraDeckDrop && addCardToDeck(extraDeckDrop)
   }, [extraDeckDrop])
-
-  // useEffect(() => {
-  //   if (props.mainDeckCards) {
-  //     setMainDeck(props.mainDeckCards)
-  //   }
-  //   if (props.extraDeckCards) setExtraDeck(props.extraDeckCards)
-  // }, [props.mainDeckCards, props.extraDeckCards])
 
   return (
     <>
@@ -116,7 +106,7 @@ export function DeckCreation() {
             <div className="col-7 mt-2">
               <Decklist saveButton mainDeckCards={mainDeck} extraDeckCards={extraDeck}
                 setMainDrop={!isMobile ? setMainDrop : undefined} setExtraDrop={!isMobile ? setExtraDrop : undefined}
-                isExtraDeckType={isExtraDeckType} deckLength={deckLength} extraDeckLength={extraDeckLength} />
+                deckLength={deckLength} extraDeckLength={extraDeckLength} />
             </div>
           </div>
         </div>

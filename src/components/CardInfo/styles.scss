@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: row;
   gap: 10px;
-  align-self: flex-start;
   margin: 10px;
   background-color: grey;
   color: white;
@@ -14,26 +13,25 @@
     margin-bottom: 5px;
   }
 
-  Button {
+  button {
     margin: 10px;
     align-self: center;
   }
 
   #card-image {
     align-self: center;
-    justify-self: center;
   }
 
   #card-text {
     margin: 20px 20px 20px 8px;
-    // margin: 20px;
   }
   
-  #next-art {
-    background-color: rgba(76, 175, 80, 0.0);
+  #desc {
+    height: 40vh;
+    overflow-y: auto;
   }
 
-#arr {
+#arrow {
   cursor: pointer;
   height: 40px;
   align-self: center;

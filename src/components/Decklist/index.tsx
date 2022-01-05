@@ -5,6 +5,7 @@ import { firestoreDb } from "../../services/firebase"
 import { cardType } from "../CardInfo"
 import { MiniCard } from "../MiniCard"
 import firebase from 'firebase/compat/app'
+import { isExtraDeckType } from "../../pages/DeckCreation"
 import './styles.scss'
 
 export type cardObj = {
@@ -27,7 +28,6 @@ type DeckProps = {
   extraDeckCards: cardListType | undefined,
   setMainDrop?: React.Dispatch<React.SetStateAction<dropItemType | undefined>>
   setExtraDrop?: React.Dispatch<React.SetStateAction<dropItemType | undefined>>
-  isExtraDeckType?: (cardType: string) => boolean
 }
 
 export function Decklist(props: DeckProps) {
@@ -35,20 +35,19 @@ export function Decklist(props: DeckProps) {
   const [deckName, setDeckName] = useState("")
   const { user } = useAuth()
 
-
   const [, dropRef] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType) => {
-      if (props.setMainDrop && props.isExtraDeckType)
-        !props.isExtraDeckType(item.cardData.type) && props.setMainDrop(item)
+      if (props.setMainDrop)
+        !isExtraDeckType(item.cardData.type) && props.setMainDrop(item)
     }
   }))
 
   const [, dropRef2] = useDrop(() => ({
     accept: 'CARD',
     drop: (item: dropItemType) => {
-      if (props.setExtraDrop && props.isExtraDeckType)
-        props.isExtraDeckType(item.cardData.type) && props.setExtraDrop(item)
+      if (props.setExtraDrop)
+        isExtraDeckType(item.cardData.type) && props.setExtraDrop(item)
     }
   }))
 
@@ -120,14 +119,17 @@ export function Decklist(props: DeckProps) {
       <div id="main-deck" ref={dropRef} className="rounded">
         {props.mainDeckCards?.map((card) => toMiniCard(card))}
       </div>
-      {props.deckLength && props.mainDeckCards && props.deckLength >= 41 ? //for minimum deck size
-        <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`} data-bs-toggle="modal" data-bs-target="#exampleModal" >
+      {props.deckLength && props.mainDeckCards && props.deckLength >= 40 ? //for minimum deck size
+        <button type="button" className={`btn btn-primary m-3 position-fixed bottom-0 end-0 ${!props.saveButton && 'invisible'}`}
+          data-bs-toggle="modal" data-bs-target="#exampleModal" >
           Save recipe
         </button>
         : ""}
       <span className="mt-2 deck-length">
         <h5>Extra Deck:</h5>
-        {props.extraDeckLength && props.extraDeckLength > 0 && <h6>{props.extraDeckLength} card{props.extraDeckLength > 1 && 's'}(maximum: 15).</h6>}
+        {props.extraDeckLength ?
+          <h6 >{props.extraDeckLength} card{props.extraDeckLength > 1 && 's'}(maximum: 15).
+          </h6> : ""}
       </span>
       <div id="extra-deck" ref={dropRef2} className="rounded">
         {props.extraDeckCards?.map(card => toMiniCard(card))}

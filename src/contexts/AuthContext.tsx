@@ -106,17 +106,13 @@ export function AuthContextProvider(props: AuthContextProviderProps) {
 
 
       const users = await firestoreDb.collection(`usuarios`).doc(`${displayName}`).get()
-      if (!users.exists) {
-        console.log("No data found, creating new user.")
+      if (!users.exists) {    // No data found, creating new user.
         await firestoreDb.collection("usuarios").doc(`${displayName}`).set({
           name: displayName,
           id: uid,
           avatar: photoURL,
           email: email
         })
-      } else {
-        console.log("User data found: " + users.data())
-        // var decks = users.data()
       }
 
       getUserAdditionalData(displayName).then(list => {
