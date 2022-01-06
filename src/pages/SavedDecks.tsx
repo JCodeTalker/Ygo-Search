@@ -37,7 +37,7 @@ export function SavedDecks() {
 
   return (
     <>
-      <MainHeader resolveFunction={() => { }} />
+      <MainHeader />
       <div className="container mt-5">
         {user ?
           <div className="row">

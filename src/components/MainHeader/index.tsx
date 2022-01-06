@@ -4,7 +4,7 @@ import { useAuth } from '../../hooks/useAuth'
 import avatar from '../../assets/avatar.png'
 
 type formProps = {
-  resolveFunction: (name: string) => void
+  resolveFunction?: (name: string) => void
 }
 
 export function MainHeader(props: formProps) {
@@ -43,9 +43,9 @@ export function MainHeader(props: formProps) {
             <li><a href="https://img.yugioh-card.com/en/rulebook/SD_RuleBook_EN_10.pdf" className="nav-link px-2 link-dark" rel="noreferrer" target="_blank">How to Play</a></li>
           </ul>
 
-          <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" onSubmit={(event) => { event.preventDefault(); props.resolveFunction(cardName) }}>
+          {props.resolveFunction && <form className="col-12 col-lg-auto mb-3 mb-lg-0 me-lg-3 d-flex" onSubmit={(event) => { event.preventDefault(); props.resolveFunction && props.resolveFunction(cardName) }}>
             <input type="search" id="search" className="form-control" placeholder="Search a card..." aria-label="Search" onChange={event => setCardName(event.target.value)} autoComplete="on" />
-          </form>
+          </form>}
 
           <div className="dropdown text-end">
             <a className="d-block link-dark text-decoration-none dropdown-toggle" id="dropdownUser1" data-bs-toggle="dropdown" aria-expanded="false">
